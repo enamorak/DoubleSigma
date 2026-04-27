@@ -1,0 +1,34 @@
+[
+  {
+    "id": "compound-js",
+    "owner": "compound-finance",
+    "repo": "compound-js",
+    "ref": "master",
+    "minScannedFiles": 10,
+    "minChangedFiles": 1
+  },
+  {
+    "id": "flashbots-ethers-provider-flashbots-bundle",
+    "owner": "flashbots",
+    "repo": "ethers-provider-flashbots-bundle",
+    "ref": "master",
+    "minScannedFiles": 3,
+    "minChangedFiles": 1
+  },
+  {
+    "id": "pooltogether-v4-client",
+    "owner": "pooltogether",
+    "repo": "v4-client-js",
+    "ref": "main",
+    "minScannedFiles": 20,
+    "minChangedFiles": 1
+  },
+  {
+    "id": "snapshot-js",
+    "owner": "snapshot-labs",
+    "repo": "snapshot.js",
+    "ref": "master",
+    "minScannedFiles": 40,
+    "minChangedFiles": 0
+  }
+]

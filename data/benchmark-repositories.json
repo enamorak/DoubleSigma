@@ -1,0 +1,74 @@
+[
+  {
+    "id": "compound-js",
+    "owner": "compound-finance",
+    "repo": "compound-js",
+    "ref": "master",
+    "taglineRu": "SDK Compound, peer ethers 5.x",
+    "taglineEn": "Compound JS SDK (ethers v5 peer)"
+  },
+  {
+    "id": "flashbots-ethers-provider",
+    "owner": "flashbots",
+    "repo": "ethers-provider-flashbots-bundle",
+    "ref": "master",
+    "taglineRu": "Flashbots provider для ethers 5",
+    "taglineEn": "Flashbots provider for ethers 5"
+  },
+  {
+    "id": "pooltogether-v4-client",
+    "owner": "pooltogether",
+    "repo": "v4-client-js",
+    "ref": "main",
+    "taglineRu": "PoolTogether V4 клиент (ethers 5)",
+    "taglineEn": "PoolTogether V4 client (ethers 5)"
+  },
+  {
+    "id": "snapshot-js",
+    "owner": "snapshot-labs",
+    "repo": "snapshot.js",
+    "ref": "master",
+    "taglineRu": "Snapshot.js (@ethersproject/*)",
+    "taglineEn": "Snapshot.js (@ethersproject/*)"
+  },
+  {
+    "id": "arbitrum-token-bridge-sdk",
+    "owner": "OffchainLabs",
+    "repo": "token-bridge-sdk",
+    "ref": "master",
+    "taglineRu": "Arbitrum token bridge SDK (ethers 5)",
+    "taglineEn": "Arbitrum token bridge SDK (ethers 5)"
+  },
+  {
+    "id": "ribbon-vaults",
+    "owner": "ribbon-finance",
+    "repo": "ribbon-v2",
+    "ref": "master",
+    "taglineRu": "Ribbon v2 контракты + TS (часто ethers 5)",
+    "taglineEn": "Ribbon v2 (contracts + TS, often ethers 5)"
+  },
+  {
+    "id": "eth-infinitism-bundler",
+    "owner": "eth-infinitism",
+    "repo": "bundler",
+    "ref": "main",
+    "taglineRu": "ERC-4337 bundler (TS + ethers)",
+    "taglineEn": "ERC-4337 bundler (TS + ethers)"
+  },
+  {
+    "id": "safe-global-safe-core-sdk",
+    "owner": "safe-global",
+    "repo": "safe-core-sdk",
+    "ref": "main",
+    "taglineRu": "Safe Core SDK монорепо",
+    "taglineEn": "Safe Core SDK monorepo"
+  },
+  {
+    "id": "graph-client",
+    "owner": "graphprotocol",
+    "repo": "graph-client",
+    "ref": "main",
+    "taglineRu": "Graph client tooling",
+    "taglineEn": "The Graph client tooling"
+  }
+]

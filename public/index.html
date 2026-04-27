@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DoubleSigma — ethers.js v5 → v6 migration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #07080c;
+        --surface: #0f1118;
+        --elevated: #161a24;
+        --border: #252a38;
+        --text: #f0f2f7;
+        --muted: #9aa3b8;
+        --accent: #4f8cff;
+        --accent-soft: rgba(79, 140, 255, 0.14);
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #fb7185;
+        --radius: 14px;
+        --font: "Manrope", system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+        min-height: 100vh;
+      }
+      .shell {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      header {
+        margin-bottom: 2rem;
+      }
+      .brand {
+        font-size: 0.75rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+      h1 {
+        font-size: clamp(1.65rem, 4vw, 2.1rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 0.5rem;
+        line-height: 1.2;
+      }
+      .lead {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 52ch;
+        margin: 0;
+      }
+      .steps {
+        display: grid;
+        gap: 1rem;
+        margin: 2rem 0;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .step {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1rem 1.15rem;
+      }
+      .step-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 8px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+      }
+      .step h3 {
+        margin: 0 0 0.35rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+      .step p {
+        margin: 0;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .step code {
+        font-size: 0.82em;
+        background: rgba(0, 0, 0, 0.35);
+        padding: 0.12rem 0.35rem;
+        border-radius: 6px;
+      }
+      section {
+        margin-top: 2.5rem;
+      }
+      h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0 0 0.65rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      h2::before {
+        content: "";
+        width: 4px;
+        height: 1.1em;
+        border-radius: 2px;
+        background: linear-gradient(180deg, var(--accent), #a78bfa);
+      }
+      .card {
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.35rem;
+      }
+      .preset-grid {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      .preset {
+        text-align: left;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .preset:hover {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .preset strong {
+        display: block;
+        font-size: 0.92rem;
+        margin-bottom: 0.25rem;
+      }
+      .preset span {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .tabs button {
+        font: inherit;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.45rem 1rem;
+        cursor: pointer;
+        background: var(--surface);
+        color: var(--text);
+      }
+      .tabs button.active {
+        border-color: transparent;
+        background: linear-gradient(120deg, var(--accent), #7c6cf0);
+        color: #fff;
+      }
+      label.field-label {
+        display: block;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        font-weight: 600;
+        margin: 0.75rem 0 0.35rem;
+      }
+      label.field-label:first-of-type {
+        margin-top: 0;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 0.65rem 0.8rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #0a0c12;
+        color: var(--text);
+        font-size: 0.95rem;
+        font-family: inherit;
+      }
+      input:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 0;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 1.5rem;
+        align-items: center;
+        margin-top: 1rem;
+      }
+      .row label {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        color: var(--text);
+      }
+      .actions {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        margin-top: 1.15rem;
+      }
+      .btn-primary {
+        font: inherit;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        padding: 0.65rem 1.25rem;
+        cursor: pointer;
+        color: #fff;
+        background: linear-gradient(120deg, var(--accent), #7c6cf0);
+      }
+      .btn-secondary {
+        font: inherit;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.65rem 1.1rem;
+        cursor: pointer;
+        background: var(--surface);
+        color: var(--text);
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .hint {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.65rem;
+      }
+      .panel.hidden {
+        display: none;
+      }
+      table.catalog {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+      .catalog-wrap {
+        overflow-x: auto;
+        margin-top: 0.75rem;
+      }
+      table.catalog th,
+      table.catalog td {
+        border: 1px solid var(--border);
+        padding: 0.5rem 0.55rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      table.catalog th {
+        background: var(--surface);
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      table.catalog code {
+        font-size: 0.78em;
+        word-break: break-word;
+      }
+      table.catalog tr.hl {
+        box-shadow: inset 0 0 0 2px var(--success);
+      }
+      .rule-id {
+        font-family: ui-monospace, monospace;
+        color: #b4c8ff;
+        font-size: 0.78rem;
+      }
+      .status {
+        font-size: 0.92rem;
+        margin-bottom: 0.65rem;
+        font-weight: 500;
+      }
+      .status.ok {
+        color: var(--success);
+      }
+      .status.err {
+        color: var(--danger);
+      }
+      pre {
+        margin: 0;
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 0.78rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 280px;
+        overflow: auto;
+        background: var(--surface);
+        padding: 0.75rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+      .applied-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 0;
+      }
+      .applied-list li {
+        padding: 0.4rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+      }
+      .applied-list a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .applied-list a:hover {
+        text-decoration: underline;
+      }
+      .diff-block {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+      }
+      .diff-block h3 {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin: 0 0 0.35rem;
+        font-weight: 600;
+      }
+      details {
+        margin-top: 1rem;
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+      .empty-presets {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="brand">DoubleSigma · Hackathon / Codemod</div>
+        <h1>Migrate ethers.js <span style="color: var(--accent)">v5 → v6</span></h1>
+        <p class="lead">
+          One screen: curated GitHub repos, the full rule catalog, dry-run or apply, and a report showing which
+          rewrites <strong>actually fired</strong> on your tree plus diff previews.
+        </p>
+      </header>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Open this page correctly</h3>
+          <p>
+            From the project folder run <code>npm run ui</code> (Node + Express serves <code>/api/*</code>).<br />
+            Do <strong>not</strong> use “Live Server” on this HTML file — presets and rules need the API.<br />
+            Console URL is often <code id="defaultUrl">http://127.0.0.1:3847</code>. You are on:
+            <strong id="hereUrl"></strong>
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Pick a target</h3>
+          <p>Click a preset card below or paste a GitHub HTTPS URL / local folder path.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Read the result</h3>
+          <p>Applied rules (with anchors into the catalog), diff snippets, metrics, and optional quantum scan.</p>
+        </div>
+      </div>
+
+      <section>
+        <h2>Preset repositories</h2>
+        <p class="hint" style="margin-top: -0.25rem; margin-bottom: 0.75rem">
+          Same list as <code>data/benchmark-repositories.json</code> / <code>public/presets.json</code> (see README → Benchmark).
+        </p>
+        <div class="card">
+          <div id="presetLoading" class="empty-presets">Loading presets…</div>
+          <div id="presetGrid" class="preset-grid hidden"></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Rule catalog</h2>
+        <p class="hint" style="margin-top: -0.25rem">
+          Loaded from <code>GET /api/rules</code>. After a run, rows for rules that rewrote code are highlighted.
+        </p>
+        <div class="card">
+          <div id="catalogLoading" class="empty-presets">Loading catalog…</div>
+          <div class="catalog-wrap hidden" id="catalogWrap">
+            <table class="catalog" id="catalogTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Was (v5)</th>
+                  <th>Now (v6)</th>
+                </tr>
+              </thead>
+              <tbody id="catalogBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Run migration</h2>
+        <div class="card">
+          <div class="tabs">
+            <button type="button" class="tab active" id="tabLocal">Local folder</button>
+            <button type="button" class="tab" id="tabGithub">GitHub URL</button>
+          </div>
+
+          <div id="panelLocal" class="panel">
+            <label class="field-label" for="path">Absolute path to the project on this machine</label>
+            <input id="path" type="text" placeholder="e.g. C:\dev\my-dapp" spellcheck="false" />
+            <p class="hint">The Node server reads the filesystem — not the browser sandbox.</p>
+          </div>
+
+          <div id="panelGithub" class="panel hidden">
+            <label class="field-label" for="url">HTTPS URL (github.com only)</label>
+            <input id="url" type="text" placeholder="https://github.com/owner/repo" spellcheck="false" />
+            <label class="field-label" for="ref">Branch / tag / commit (optional)</label>
+            <input id="ref" type="text" placeholder="Empty = default branch via GitHub API" spellcheck="false" />
+            <div class="row">
+              <label><input type="checkbox" id="cleanup" checked /> Delete temp clone after dry-run</label>
+            </div>
+            <p class="hint">
+              <strong>Apply</strong> writes into the unpacked folder — response includes <code>workDir</code>. Demos usually use dry-run.
+            </p>
+          </div>
+
+          <div class="row">
+            <label><input type="radio" name="mode" value="dry-run" checked /> Preview only (dry-run)</label>
+            <label><input type="radio" name="mode" value="apply" /> Write changes (apply)</label>
+          </div>
+          <div class="row">
+            <label><input type="checkbox" id="quantum" checked /> Quantum report (ranking + latent v5 scan)</label>
+            <label><input type="checkbox" id="ai" /> AI (not wired in v0.1)</label>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn-primary" id="run">Run</button>
+            <button type="button" class="btn-secondary" id="health">API health</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Result</h2>
+        <div class="card">
+          <div id="status" class="status"></div>
+          <div id="appliedBlock" class="hidden">
+            <p style="margin: 0 0 0.35rem; font-weight: 600">Rules that rewrote code (recommended for this repo)</p>
+            <p class="hint" style="margin: 0 0 0.5rem">Links jump to the matching row in the catalog above.</p>
+            <ul class="applied-list" id="appliedList"></ul>
+          </div>
+          <details id="noMatchBlock" class="hidden">
+            <summary>Catalog rules with no matches in this run</summary>
+            <pre id="noMatchPre"></pre>
+          </details>
+          <p style="margin: 1rem 0 0.35rem; font-weight: 600">Log &amp; metrics</p>
+          <pre id="out"></pre>
+          <div id="diffs"></div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.getElementById("hereUrl").textContent = window.location.origin;
+
+      function ruleDomId(id) {
+        return "rule_" + id.replace(/[^a-zA-Z0-9]+/g, "_");
+      }
+
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      let catalogById = new Map();
+
+      async function fetchJsonFromUrls(urls, label) {
+        let lastErr = "";
+        for (const url of urls) {
+          try {
+            const res = await fetch(url);
+            const text = await res.text();
+            if (!res.ok) {
+              lastErr = url + " HTTP " + res.status;
+              continue;
+            }
+            const t = text.trimStart();
+            if (t.startsWith("<")) {
+              lastErr = url + " returned HTML — use npm run ui (Node serves /api/*)";
+              continue;
+            }
+            return JSON.parse(text);
+          } catch (e) {
+            lastErr = String(e);
+          }
+        }
+        throw new Error(label + ": " + lastErr);
+      }
+
+      async function loadCatalog() {
+        const data = await fetchJsonFromUrls(["/api/rules"], "Catalog");
+        const rules = Array.isArray(data.rules) ? data.rules : [];
+        catalogById = new Map(rules.map((r) => [r.id, r]));
+        document.getElementById("catalogLoading").classList.add("hidden");
+        document.getElementById("catalogWrap").classList.remove("hidden");
+        const body = document.getElementById("catalogBody");
+        body.innerHTML = "";
+        for (const r of rules) {
+          const tr = document.createElement("tr");
+          tr.id = ruleDomId(r.id);
+          tr.innerHTML =
+            "<td class=\"rule-id\">" +
+            escapeHtml(r.id) +
+            "</td><td><strong>" +
+            escapeHtml(r.title) +
+            "</strong><br/><span style=\"color:var(--muted);font-size:0.88em\">" +
+            escapeHtml(r.description) +
+            "</span></td><td><code>" +
+            escapeHtml(r.v5Pattern) +
+            "</code></td><td><code>" +
+            escapeHtml(r.v6Replacement) +
+            "</code></td>";
+          body.appendChild(tr);
+        }
+      }
+
+      async function loadPresets() {
+        const grid = document.getElementById("presetGrid");
+        const loading = document.getElementById("presetLoading");
+        try {
+          const data = await fetchJsonFromUrls(["/api/presets", "/presets.json"], "Presets");
+          const list = Array.isArray(data) ? data : [];
+          if (!list.length) {
+            throw new Error("preset list is empty");
+          }
+          loading.classList.add("hidden");
+          grid.classList.remove("hidden");
+          grid.innerHTML = "";
+          for (const p of list) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "preset";
+            btn.innerHTML =
+              "<strong>" +
+              escapeHtml(p.owner + "/" + p.repo) +
+              "</strong><span>" +
+              escapeHtml(p.taglineEn || p.taglineRu || "") +
+              "</span>";
+            btn.addEventListener("click", () => {
+              document.getElementById("tabGithub").click();
+              document.getElementById("url").value = "https://github.com/" + p.owner + "/" + p.repo;
+              document.getElementById("ref").value = p.ref || "";
+              document.getElementById("url").focus();
+            });
+            grid.appendChild(btn);
+          }
+        } catch (e) {
+          loading.textContent = "Could not load presets: " + e;
+        }
+      }
+
+      const pathEl = document.getElementById("path");
+      const urlEl = document.getElementById("url");
+      const refEl = document.getElementById("ref");
+      const cleanupEl = document.getElementById("cleanup");
+      const out = document.getElementById("out");
+      const diffsEl = document.getElementById("diffs");
+      const status = document.getElementById("status");
+      const run = document.getElementById("run");
+      const health = document.getElementById("health");
+      const quantum = document.getElementById("quantum");
+      const ai = document.getElementById("ai");
+      const panelLocal = document.getElementById("panelLocal");
+      const panelGithub = document.getElementById("panelGithub");
+      const tabLocal = document.getElementById("tabLocal");
+      const tabGithub = document.getElementById("tabGithub");
+      const appliedBlock = document.getElementById("appliedBlock");
+      const appliedList = document.getElementById("appliedList");
+      const noMatchBlock = document.getElementById("noMatchBlock");
+      const noMatchPre = document.getElementById("noMatchPre");
+
+      let source = "local";
+      tabLocal.addEventListener("click", () => {
+        source = "local";
+        tabLocal.classList.add("active");
+        tabGithub.classList.remove("active");
+        panelLocal.classList.remove("hidden");
+        panelGithub.classList.add("hidden");
+      });
+      tabGithub.addEventListener("click", () => {
+        source = "github";
+        tabGithub.classList.add("active");
+        tabLocal.classList.remove("active");
+        panelGithub.classList.remove("hidden");
+        panelLocal.classList.add("hidden");
+      });
+
+      function highlightRules(ids) {
+        for (const tr of document.querySelectorAll("#catalogBody tr")) {
+          tr.classList.remove("hl");
+        }
+        for (const id of ids) {
+          const row = document.getElementById(ruleDomId(id));
+          if (row) row.classList.add("hl");
+        }
+      }
+
+      function getMode() {
+        const c = document.querySelector('input[name="mode"]:checked');
+        return c && c.value === "apply" ? "apply" : "dry-run";
+      }
+
+      function renderDiffs(diffs) {
+        diffsEl.innerHTML = "";
+        if (!diffs || !diffs.length) return;
+        for (const d of diffs) {
+          const block = document.createElement("div");
+          block.className = "diff-block";
+          block.innerHTML = "<h3>" + escapeHtml(d.filePath) + "</h3>";
+          const pre = document.createElement("pre");
+          pre.textContent = d.preview;
+          block.appendChild(pre);
+          diffsEl.appendChild(block);
+        }
+      }
+
+      function renderApplied(summary) {
+        appliedList.innerHTML = "";
+        if (!summary || !summary.length) {
+          appliedBlock.classList.add("hidden");
+          highlightRules([]);
+          return;
+        }
+        appliedBlock.classList.remove("hidden");
+        for (const item of summary) {
+          const meta = catalogById.get(item.id);
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = "#" + ruleDomId(item.id);
+          a.textContent = meta ? meta.title : item.id;
+          li.appendChild(a);
+          li.appendChild(
+            document.createTextNode(
+              " · rewrites: " + item.rewriteCount + ", files: " + item.filesAffected
+            )
+          );
+          appliedList.appendChild(li);
+        }
+        highlightRules(summary.map((s) => s.id));
+      }
+
+      function renderNoMatch(ids) {
+        if (!ids || !ids.length) {
+          noMatchBlock.classList.add("hidden");
+          return;
+        }
+        noMatchBlock.classList.remove("hidden");
+        noMatchPre.textContent = ids.join("\n");
+      }
+
+      loadCatalog().catch((e) => {
+        document.getElementById("catalogLoading").textContent = "Catalog error: " + e;
+      });
+      loadPresets();
+
+      run.addEventListener("click", async () => {
+        status.textContent = "Running…";
+        status.className = "status";
+        out.textContent = "";
+        diffsEl.innerHTML = "";
+        appliedBlock.classList.add("hidden");
+        noMatchBlock.classList.add("hidden");
+        highlightRules([]);
+        run.disabled = true;
+        try {
+          const body =
+            source === "github"
+              ? {
+                  url: urlEl.value.trim(),
+                  ref: refEl.value.trim() || undefined,
+                  mode: getMode(),
+                  quantum: quantum.checked,
+                  ai: ai.checked,
+                  cleanup: cleanupEl.checked
+                }
+              : {
+                  path: pathEl.value,
+                  mode: getMode(),
+                  quantum: quantum.checked,
+                  ai: ai.checked
+                };
+          const res = await fetch("/api/migrate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
+          const data = await res.json();
+          if (data.error) {
+            status.className = "status err";
+            status.textContent = data.error;
+            out.textContent = JSON.stringify(data, null, 2);
+            return;
+          }
+          if (data.ok) {
+            status.className = "status ok";
+            let t = "";
+            if (data.source) {
+              t =
+                data.source.owner +
+                "/" +
+                data.source.repo +
+                " @ " +
+                data.source.ref +
+                (data.targetResolved ? " → " + data.targetResolved : "");
+            } else {
+              t = data.targetResolved || "done";
+            }
+            if (data.workDir) t += " · workDir: " + data.workDir;
+            if (data.cleanedUp) t += " · temp clone removed";
+            status.textContent = "OK — " + t;
+          } else {
+            status.className = "status err";
+            status.textContent = "Error — see log";
+          }
+          renderApplied(data.appliedRulesSummary);
+          renderNoMatch(data.rulesWithoutMatch);
+          const metricsBlock =
+            JSON.stringify(data.metrics, null, 2) +
+            (data.quantumInsights
+              ? "\n" + JSON.stringify({ quantumInsights: data.quantumInsights }, null, 2)
+              : "");
+          out.textContent = data.log + "\n" + metricsBlock;
+          renderDiffs(data.diffs);
+        } catch (e) {
+          status.className = "status err";
+          status.textContent = String(e);
+        } finally {
+          run.disabled = false;
+        }
+      });
+
+      health.addEventListener("click", async () => {
+        const res = await fetch("/api/health");
+        out.textContent = await res.text();
+        diffsEl.innerHTML = "";
+        status.className = "status ok";
+        status.textContent = "API OK";
+      });
+    </script>
+  </body>
+</html>

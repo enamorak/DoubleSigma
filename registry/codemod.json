@@ -1,0 +1,11 @@
+{
+  "name": "doublesigma/ethers-v5-to-v6",
+  "version": "0.1.0",
+  "description": "Deterministic ethers.js v5 to v6 migration codemod with quantum-inspired scoring.",
+  "language": "typescript",
+  "entrypoint": "dist/cli.js",
+  "commands": [
+    "doublesigma migrate . --dry-run --quantum",
+    "doublesigma migrate . --apply"
+  ]
+}

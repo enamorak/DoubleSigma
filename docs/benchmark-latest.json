@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-04-27T22:11:02.657Z",
+  "rows": [
+    {
+      "id": "compound-js",
+      "owner": "compound-finance",
+      "repo": "compound-js",
+      "ref": "master",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 30,
+      "changedFiles": 6,
+      "rewrites": 9,
+      "distinctRules": 3,
+      "durationMs": 1246
+    },
+    {
+      "id": "flashbots-ethers-provider",
+      "owner": "flashbots",
+      "repo": "ethers-provider-flashbots-bundle",
+      "ref": "master",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 3,
+      "changedFiles": 3,
+      "rewrites": 3,
+      "distinctRules": 1,
+      "durationMs": 587
+    },
+    {
+      "id": "pooltogether-v4-client",
+      "owner": "pooltogether",
+      "repo": "v4-client-js",
+      "ref": "main",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 37,
+      "changedFiles": 1,
+      "rewrites": 1,
+      "distinctRules": 1,
+      "durationMs": 639
+    },
+    {
+      "id": "snapshot-js",
+      "owner": "snapshot-labs",
+      "repo": "snapshot.js",
+      "ref": "master",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 59,
+      "changedFiles": 0,
+      "rewrites": 0,
+      "distinctRules": 0,
+      "durationMs": 2175
+    },
+    {
+      "id": "arbitrum-token-bridge-sdk",
+      "owner": "OffchainLabs",
+      "repo": "token-bridge-sdk",
+      "ref": "master",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 10,
+      "changedFiles": 0,
+      "rewrites": 0,
+      "distinctRules": 0,
+      "durationMs": 1269
+    },
+    {
+      "id": "ribbon-vaults",
+      "owner": "ribbon-finance",
+      "repo": "ribbon-v2",
+      "ref": "master",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 79,
+      "changedFiles": 14,
+      "rewrites": 15,
+      "distinctRules": 4,
+      "durationMs": 6228
+    },
+    {
+      "id": "eth-infinitism-bundler",
+      "owner": "eth-infinitism",
+      "repo": "bundler",
+      "ref": "main",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 90,
+      "changedFiles": 16,
+      "rewrites": 18,
+      "distinctRules": 4,
+      "durationMs": 1556
+    },
+    {
+      "id": "safe-global-safe-core-sdk",
+      "owner": "safe-global",
+      "repo": "safe-core-sdk",
+      "ref": "main",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 365,
+      "changedFiles": 13,
+      "rewrites": 13,
+      "distinctRules": 1,
+      "durationMs": 3983
+    },
+    {
+      "id": "graph-client",
+      "owner": "graphprotocol",
+      "repo": "graph-client",
+      "ref": "main",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 59,
+      "changedFiles": 0,
+      "rewrites": 0,
+      "distinctRules": 0,
+      "durationMs": 1514
+    }
+  ]
+}

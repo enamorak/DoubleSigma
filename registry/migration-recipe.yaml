@@ -1,0 +1,9 @@
+name: doublesigma-ethers-v5-to-v6
+description: Deterministic migration recipe for ethers.js v5 to v6.
+steps:
+  - name: analyze
+    command: doublesigma migrate . --dry-run --quantum
+  - name: apply
+    command: doublesigma migrate . --apply
+  - name: verify
+    command: npm run build && npm test

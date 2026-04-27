@@ -1,0 +1,52 @@
+{
+  "name": "doublesigma-ethers-v6",
+  "version": "0.1.0",
+  "description": "Deterministic ethers.js v5 to v6 migration tool with quantum-inspired scoring.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "doublesigma": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "public",
+    "data",
+    "docs",
+    "registry",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "migrate": "tsx src/cli.ts",
+    "ui": "tsx src/web/standalone.ts",
+    "start": "node dist/web/standalone.js",
+    "test": "npm run build && node --test tests/integration/real-repos.test.mjs",
+    "test:network": "npm run build && node --test tests/integration/real-repos.test.mjs",
+    "benchmark": "npm run build && node scripts/benchmark-repos.mjs",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "codemod",
+    "ethers",
+    "migration",
+    "typescript",
+    "hackathon"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^24.0.0",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
