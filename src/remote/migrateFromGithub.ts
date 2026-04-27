@@ -5,7 +5,7 @@ import {
 } from "../api/ruleApplySummary.js";
 import { buildDiffPreviews, type DiffPreview } from "../diffPreview.js";
 import { runMigrationJob } from "../migrationJob.js";
-import type { CliOptions, QuantumInsights } from "../types.js";
+import type { AiPassMetrics, CliOptions, QuantumInsights } from "../types.js";
 import { prepareGithubRepo } from "./githubArchive.js";
 import { parseGithubRepoUrl } from "./parseGithubUrl.js";
 
@@ -26,6 +26,10 @@ export interface MigrateApiPayload {
   rulesWithoutMatch: string[];
   /** Present when migration ran with `quantum: true`. */
   quantumInsights?: QuantumInsights | null;
+  /** Present when migration ran with `ai: true` (Groq advisory pass). */
+  aiMetrics?: AiPassMetrics | null;
+  /** Truncated Groq notes (advisory; not auto-applied). */
+  aiNotes?: string | null;
 }
 
 function emptyPayload(log: string, cleanedUp: boolean): MigrateApiPayload {
@@ -41,6 +45,8 @@ function emptyPayload(log: string, cleanedUp: boolean): MigrateApiPayload {
     appliedRulesSummary: [],
     rulesWithoutMatch: listRulesWithoutMatch([]),
     quantumInsights: null,
+    aiMetrics: null,
+    aiNotes: null,
   };
 }
 
@@ -104,6 +110,8 @@ export async function migrateFromGithubHttpsUrl(
       appliedRulesSummary,
       rulesWithoutMatch,
       quantumInsights: hasError || !cli.quantum ? null : job.result.quantumInsights ?? null,
+      aiMetrics: hasError || !cli.ai ? null : job.result.aiMetrics ?? null,
+      aiNotes: hasError || !cli.ai ? null : job.result.aiNotes ?? null,
     };
   } finally {
     if (shouldCleanup) {

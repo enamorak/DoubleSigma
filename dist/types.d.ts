@@ -31,9 +31,20 @@ export interface QuantumInsights {
     latentEthersProjectImports: number;
     summary: string;
 }
+/** Aggregated Groq (or other) advisory pass — does not apply edits automatically. */
+export interface AiPassMetrics {
+    totalTimeMs: number;
+    tokensUsed: number;
+    filesProcessed: number;
+    cacheHits: number;
+    apiCalls: number;
+}
 export interface MigrationResult {
     scannedFiles: number;
     changedFiles: number;
     changes: FileChange[];
     quantumInsights?: QuantumInsights;
+    aiMetrics?: AiPassMetrics;
+    /** Truncated Groq advisory text (when `ai` was enabled and a key was present). */
+    aiNotes?: string;
 }

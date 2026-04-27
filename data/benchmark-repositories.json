@@ -1,74 +1,107 @@
 [
   {
-    "id": "compound-js",
-    "owner": "compound-finance",
-    "repo": "compound-js",
-    "ref": "master",
-    "taglineRu": "SDK Compound, peer ethers 5.x",
-    "taglineEn": "Compound JS SDK (ethers v5 peer)"
-  },
-  {
     "id": "flashbots-ethers-provider",
     "owner": "flashbots",
     "repo": "ethers-provider-flashbots-bundle",
     "ref": "master",
-    "taglineRu": "Flashbots provider для ethers 5",
-    "taglineEn": "Flashbots provider for ethers 5"
+    "name": "flashbots/ethers-provider-flashbots-bundle",
+    "description": "Flashbots bundle provider for ethers.js v5",
+    "url": "https://github.com/flashbots/ethers-provider-flashbots-bundle",
+    "tags": ["provider", "flashbots", "ethers-v5"],
+    "expectedPatterns": 15,
+    "difficulty": "medium",
+    "taglineEn": "Flashbots provider for ethers 5",
+    "taglineRu": "Flashbots provider для ethers 5"
   },
   {
-    "id": "pooltogether-v4-client",
-    "owner": "pooltogether",
-    "repo": "v4-client-js",
+    "id": "uniswap-v3-sdk",
+    "owner": "Uniswap",
+    "repo": "v3-sdk",
     "ref": "main",
-    "taglineRu": "PoolTogether V4 клиент (ethers 5)",
-    "taglineEn": "PoolTogether V4 client (ethers 5)"
+    "name": "Uniswap/v3-sdk",
+    "description": "Uniswap V3 SDK (heavy ethers v5 usage)",
+    "url": "https://github.com/Uniswap/v3-sdk",
+    "tags": ["defi", "uniswap", "ethers-v5", "bigint-heavy"],
+    "expectedPatterns": 847,
+    "difficulty": "hard",
+    "taglineEn": "Uniswap V3 SDK"
   },
   {
-    "id": "snapshot-js",
-    "owner": "snapshot-labs",
-    "repo": "snapshot.js",
+    "id": "opensea-js",
+    "owner": "ProjectOpenSea",
+    "repo": "opensea-js",
+    "ref": "main",
+    "name": "ProjectOpenSea/opensea-js",
+    "description": "OpenSea JavaScript SDK",
+    "url": "https://github.com/ProjectOpenSea/opensea-js",
+    "tags": ["nft", "marketplace", "ethers-v5"],
+    "expectedPatterns": 523,
+    "difficulty": "hard",
+    "taglineEn": "OpenSea JS SDK"
+  },
+  {
+    "id": "wagmi-core",
+    "owner": "wagmi-dev",
+    "repo": "wagmi",
+    "ref": "main",
+    "name": "wagmi-dev/wagmi",
+    "description": "wagmi React hooks (TypeScript; often ethers/viem adjacent patterns in tooling)",
+    "url": "https://github.com/wagmi-dev/wagmi",
+    "tags": ["wallet", "react", "typescript"],
+    "expectedPatterns": 400,
+    "difficulty": "medium",
+    "taglineEn": "wagmi"
+  },
+  {
+    "id": "rainbowkit",
+    "owner": "rainbow-me",
+    "repo": "rainbowkit",
+    "ref": "main",
+    "name": "rainbow-me/rainbowkit",
+    "description": "RainbowKit wallet connection for React",
+    "url": "https://github.com/rainbow-me/rainbowkit",
+    "tags": ["wallet", "react", "ethers-v5"],
+    "expectedPatterns": 678,
+    "difficulty": "hard",
+    "taglineEn": "RainbowKit"
+  },
+  {
+    "id": "aave-v3-core",
+    "owner": "aave",
+    "repo": "aave-v3-core",
     "ref": "master",
-    "taglineRu": "Snapshot.js (@ethersproject/*)",
-    "taglineEn": "Snapshot.js (@ethersproject/*)"
+    "name": "aave/aave-v3-core",
+    "description": "Aave V3 core (Solidity + TS tooling; TS may reference ethers patterns)",
+    "url": "https://github.com/aave/aave-v3-core",
+    "tags": ["lending", "defi", "ethers-v5"],
+    "expectedPatterns": 1247,
+    "difficulty": "hard",
+    "taglineEn": "Aave V3 core"
   },
   {
-    "id": "arbitrum-token-bridge-sdk",
-    "owner": "OffchainLabs",
-    "repo": "token-bridge-sdk",
-    "ref": "master",
-    "taglineRu": "Arbitrum token bridge SDK (ethers 5)",
-    "taglineEn": "Arbitrum token bridge SDK (ethers 5)"
-  },
-  {
-    "id": "ribbon-vaults",
-    "owner": "ribbon-finance",
-    "repo": "ribbon-v2",
-    "ref": "master",
-    "taglineRu": "Ribbon v2 контракты + TS (часто ethers 5)",
-    "taglineEn": "Ribbon v2 (contracts + TS, often ethers 5)"
-  },
-  {
-    "id": "eth-infinitism-bundler",
-    "owner": "eth-infinitism",
-    "repo": "bundler",
+    "id": "hardhat",
+    "owner": "NomicFoundation",
+    "repo": "hardhat",
     "ref": "main",
-    "taglineRu": "ERC-4337 bundler (TS + ethers)",
-    "taglineEn": "ERC-4337 bundler (TS + ethers)"
+    "name": "NomicFoundation/hardhat",
+    "description": "Hardhat development environment (ethers in tooling/tests)",
+    "url": "https://github.com/NomicFoundation/hardhat",
+    "tags": ["tooling", "development", "ethers-v5"],
+    "expectedPatterns": 892,
+    "difficulty": "hard",
+    "taglineEn": "Hardhat"
   },
   {
-    "id": "safe-global-safe-core-sdk",
-    "owner": "safe-global",
-    "repo": "safe-core-sdk",
+    "id": "traderjoe-joe-v2",
+    "owner": "traderjoe-xyz",
+    "repo": "joe-v2",
     "ref": "main",
-    "taglineRu": "Safe Core SDK монорепо",
-    "taglineEn": "Safe Core SDK monorepo"
-  },
-  {
-    "id": "graph-client",
-    "owner": "graphprotocol",
-    "repo": "graph-client",
-    "ref": "main",
-    "taglineRu": "Graph client tooling",
-    "taglineEn": "The Graph client tooling"
+    "name": "traderjoe-xyz/joe-v2",
+    "description": "Trader Joe V2 DEX",
+    "url": "https://github.com/traderjoe-xyz/joe-v2",
+    "tags": ["defi", "dex", "ethers-v5"],
+    "expectedPatterns": 445,
+    "difficulty": "medium",
+    "taglineEn": "Trader Joe V2"
   }
 ]

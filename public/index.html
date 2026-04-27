@@ -294,6 +294,25 @@
         color: #b4c8ff;
         font-size: 0.78rem;
       }
+      .conf-high {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--success);
+      }
+      .conf-med {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--warning);
+      }
+      .conf-low {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--danger);
+      }
+      .bench-zero-rew {
+        cursor: help;
+        border-bottom: 1px dotted var(--warning);
+      }
       .status {
         font-size: 0.92rem;
         margin-bottom: 0.65rem;
@@ -356,6 +375,190 @@
         color: var(--muted);
         font-size: 0.9rem;
       }
+      .page-nav {
+        display: flex;
+        gap: 0.5rem;
+        margin: -0.25rem 0 1.5rem;
+        flex-wrap: wrap;
+      }
+      .page-nav button {
+        font: inherit;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.5rem 1.15rem;
+        cursor: pointer;
+        background: var(--surface);
+        color: var(--text);
+      }
+      .page-nav button.active {
+        border-color: transparent;
+        background: linear-gradient(120deg, var(--accent), #7c6cf0);
+        color: #fff;
+      }
+      #pageMigrate.hidden,
+      #pageBenchmarks.hidden {
+        display: none !important;
+      }
+      table.bench {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+      table.bench th,
+      table.bench td {
+        border: 1px solid var(--border);
+        padding: 0.45rem 0.5rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      table.bench th {
+        background: var(--surface);
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      table.bench td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .bench-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-bottom: 1rem;
+        align-items: center;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+      }
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        text-align: center;
+      }
+      .summary-card .val {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .summary-card .lbl {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-top: 0.25rem;
+      }
+      .bench-kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.85rem;
+        margin-bottom: 1.25rem;
+      }
+      .bench-kpi {
+        border-radius: 12px;
+        padding: 1rem 1.15rem;
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        background: var(--surface);
+      }
+      .bench-kpi.ok {
+        border-left-color: var(--success);
+      }
+      .bench-kpi.rew {
+        border-left-color: #7c6cf0;
+      }
+      .bench-kpi.time {
+        border-left-color: var(--warning);
+      }
+      .bench-kpi.fp {
+        border-left-color: #fb7185;
+      }
+      .bench-kpi .big {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+      .bench-kpi .sub {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+      .bench-kpi .foot {
+        font-size: 0.72rem;
+        color: var(--accent);
+        margin-top: 0.4rem;
+      }
+      .bench-viz {
+        margin: 1rem 0;
+        padding: 1rem 1.15rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      }
+      .bench-viz h3 {
+        margin: 0 0 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .bench-bar-row {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.78rem;
+      }
+      .bench-bar-row .name {
+        width: 9.5rem;
+        flex-shrink: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--muted);
+      }
+      .bench-bar-meta {
+        width: 5.5rem;
+        flex-shrink: 0;
+        text-align: right;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .bench-bar-track {
+        flex: 1;
+        height: 10px;
+        background: rgba(0, 0, 0, 0.35);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      .bench-bar-fill {
+        height: 100%;
+        border-radius: 5px;
+        background: linear-gradient(90deg, var(--accent), #7c6cf0);
+      }
+      .metrics-explain {
+        margin-top: 1.5rem;
+        padding: 1rem 1.2rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+      .metrics-explain h4 {
+        margin: 0 0 0.5rem;
+        color: var(--text);
+        font-size: 0.95rem;
+      }
+      .metrics-explain ul {
+        margin: 0.35rem 0 0;
+        padding-left: 1.2rem;
+        line-height: 1.55;
+      }
     </style>
   </head>
   <body>
@@ -368,6 +571,98 @@
           rewrites <strong>actually fired</strong> on your tree plus diff previews.
         </p>
       </header>
+
+      <div class="page-nav" role="tablist" aria-label="Pages">
+        <button type="button" class="active" id="navMigrate">Migrate</button>
+        <button type="button" id="navBenchmarks">Benchmarks</button>
+      </div>
+
+      <div id="pageMigrate">
+      <section class="card" style="margin-bottom: 1.75rem">
+        <h2 style="margin-top: 0">What is DoubleSigma?</h2>
+        <p class="lead" style="max-width: none; margin-bottom: 0.75rem">
+          DoubleSigma is a <strong>deterministic</strong> codemod-style migrator for common
+          <strong>ethers.js v5 → v6</strong> API rewrites, with a <strong>quantum-inspired</strong> latent-pattern scan
+          and an optional <strong>Groq</strong> advisory pass for leftovers (no auto-apply from AI — review notes in the log).
+        </p>
+        <ul style="margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.92rem">
+          <li>Providers, constants, <code>utils</code> renames, conservative <code>BigNumber</code> literals, narrow <code>.deployed()</code> cleanup, <code>@ethersproject/*</code> import paths (abi / providers / tagged bignumber)</li>
+          <li>GitHub zipball import — no local <code>git</code> required</li>
+          <li><strong>Benchmarks</strong> tab: dry-run the curated public repos; export CSV/JSON/HTML for judges</li>
+        </ul>
+        <details style="margin-top: 1rem">
+          <summary style="cursor: pointer; font-weight: 600">How it works</summary>
+          <div style="margin-top: 0.75rem; display: grid; gap: 0.65rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))">
+            <div class="step" style="margin: 0">
+              <strong>Quantum scan</strong>
+              <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted)">Read-only ranking + latent v5 markers (BigNumber, nested providers, …).</p>
+            </div>
+            <div class="step" style="margin: 0">
+              <strong>Codemods</strong>
+              <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted)">String transforms from one catalog — same engine as CLI.</p>
+            </div>
+            <div class="step" style="margin: 0">
+              <strong>AI (Groq)</strong>
+              <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted)">Set <code>GROQ_API_KEY</code> in <code>.env</code>; metrics: time, tokens, files reviewed.</p>
+            </div>
+            <div class="step" style="margin: 0">
+              <strong>Benchmarks</strong>
+              <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: var(--muted)">Run all / export — numbers are <em>measured</em> on your machine.</p>
+            </div>
+          </div>
+        </details>
+        <p style="margin: 1rem 0 0; font-size: 0.88rem; color: var(--muted)">
+          <strong>Quick start:</strong> (1) Choose a preset or paste a GitHub URL → (2) <strong>Run</strong> dry-run → (3) inspect diffs; use <strong>Apply</strong> only when satisfied.
+        </p>
+        <h3 style="margin: 1.35rem 0 0.5rem; font-size: 1rem; font-weight: 700">Why DoubleSigma?</h3>
+        <p class="hint" style="margin: 0 0 0.65rem">
+          Positioning for judges: focused ethers v5→v6 codemods, real multi-repo benchmarks, deterministic core rules.
+        </p>
+        <div class="catalog-wrap" style="margin-top: 0">
+          <table class="catalog" style="font-size: 0.8rem">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>DoubleSigma</th>
+                <th>Manual migration</th>
+                <th>Generic codemods</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ethers.js v5→v6 coverage</td>
+                <td>✅ Dedicated catalog + <code>@ethersproject/*</code> import paths</td>
+                <td>❌ Slow, error-prone</td>
+                <td>❌ No first-class ethers story in public registries</td>
+              </tr>
+              <tr>
+                <td>False positives (core rules)</td>
+                <td>✅ Deterministic string transforms</td>
+                <td>❌ Human error</td>
+                <td>⚠️ Varies by tool</td>
+              </tr>
+              <tr>
+                <td>Quantum-style latent scan</td>
+                <td>✅ Read-only debt signals in API/UI</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Optional AI (Groq)</td>
+                <td>✅ Advisory notes, no auto-apply</td>
+                <td>❌</td>
+                <td>⚠️ Some tools</td>
+              </tr>
+              <tr>
+                <td>Public GitHub benchmarks</td>
+                <td>✅ Curated 8-repo dry-run + export</td>
+                <td>❌</td>
+                <td>⚠️ Rare for Web3 stacks</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <div class="steps">
         <div class="step">
@@ -416,6 +711,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Title</th>
+                  <th>Confidence</th>
                   <th>Was (v5)</th>
                   <th>Now (v6)</th>
                 </tr>
@@ -459,7 +755,7 @@
           </div>
           <div class="row">
             <label><input type="checkbox" id="quantum" checked /> Quantum report (ranking + latent v5 scan)</label>
-            <label><input type="checkbox" id="ai" /> AI (not wired in v0.1)</label>
+            <label><input type="checkbox" id="ai" /> AI advisory (Groq — needs <code>GROQ_API_KEY</code> in <code>.env</code>)</label>
           </div>
           <div class="actions">
             <button type="button" class="btn-primary" id="run">Run</button>
@@ -483,9 +779,107 @@
           </details>
           <p style="margin: 1rem 0 0.35rem; font-weight: 600">Log &amp; metrics</p>
           <pre id="out"></pre>
+          <details id="aiNotesBlock" class="hidden" style="margin-top: 0.75rem">
+            <summary>AI notes (Groq, advisory)</summary>
+            <pre id="aiNotesPre" style="margin-top: 0.5rem; max-height: 320px"></pre>
+          </details>
           <div id="diffs"></div>
         </div>
       </section>
+      </div>
+
+      <div id="pageBenchmarks" class="hidden">
+        <section>
+          <h2>Benchmark dashboard</h2>
+          <p class="hint" style="margin-top: -0.25rem; margin-bottom: 0.85rem">
+            Same repos as <code>data/benchmark-repositories.json</code>. Each run is a real
+            <strong>dry-run</strong> (zipball download, temp dir removed). Uses <code>POST /api/benchmark</code>.
+            <strong>Impact</strong> = share of scanned <code>.ts/.tsx/.js/.jsx</code> files that received at least one rewrite (honest coverage signal for large monorepos).
+            <strong>Time saved</strong> uses a fixed heuristic: <strong>3 minutes per rewrite</strong> (shown as minutes / hours / dev-days).
+          </p>
+          <div id="benchSummaryTop" class="hidden"></div>
+          <div class="card">
+            <div class="bench-actions">
+              <button type="button" class="btn-primary" id="benchRunAll">Run all benchmarks</button>
+              <button type="button" class="btn-secondary" id="benchExportCsv">Export CSV</button>
+              <button type="button" class="btn-secondary" id="benchExportJson">Export JSON</button>
+              <button type="button" class="btn-secondary" id="benchGenerateReport">Generate HTML report</button>
+              <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; cursor: pointer">
+                <input type="checkbox" id="benchAi" /> Use AI (Groq · <code>GROQ_API_KEY</code>)
+              </label>
+              <span class="hint" id="benchGlobalStatus" style="margin: 0"></span>
+            </div>
+            <div id="benchProgressWrap" class="hidden" style="margin-bottom: 1rem">
+              <div class="hint" id="benchProgressLabel" style="margin-bottom: 0.35rem"></div>
+              <div style="height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; border: 1px solid var(--border)">
+                <div
+                  id="benchProgressBar"
+                  style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #7c6cf0); transition: width 0.2s ease"
+                ></div>
+              </div>
+            </div>
+            <div class="catalog-wrap">
+              <table class="bench" id="benchTable">
+                <thead>
+                  <tr>
+                    <th>Repository</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Scanned</th>
+                    <th>Changed</th>
+                    <th>Rewrites</th>
+                    <th>Rules</th>
+                    <th title="min(100%, rewrites ÷ latentBigNumberMarkers × 100). Raw ratio can exceed 100%; display is capped.">Readiness</th>
+                    <th>Impact</th>
+                    <th>AI files</th>
+                    <th>Time saved</th>
+                    <th>FP</th>
+                    <th>ms</th>
+                    <th>Run</th>
+                  </tr>
+                </thead>
+                <tbody id="benchBody"></tbody>
+              </table>
+            </div>
+            <div id="benchBarChart" class="bench-viz hidden">
+              <h3>Rewrites by repository</h3>
+              <div id="benchBarChartInner"></div>
+            </div>
+            <div id="benchRuleMix" class="bench-viz hidden">
+              <h3>Top rule IDs (rewrite count)</h3>
+              <p class="hint" style="margin: -0.35rem 0 0.65rem">Aggregated across successful runs in this session.</p>
+              <div id="benchRuleMixInner"></div>
+            </div>
+            <div id="benchSummary" class="summary-grid hidden"></div>
+            <div class="metrics-explain">
+              <h4>How to read these metrics</h4>
+              <ul>
+                <li><strong>Rewrites</strong> — number of rule applications (a file can count multiple times).</li>
+                <li><strong>Files changed</strong> — distinct source files touched by at least one rewrite.</li>
+                <li><strong>Readiness</strong> — <code>min(100%, rewrites ÷ latentBigNumberMarkers × 100)</code> when markers &gt; 0 (raw ratio can exceed 100% if rewrites outnumber the coarse marker count — we cap for display).</li>
+                <li><strong>Impact</strong> — <code>files changed ÷ files scanned</code> among TS/JS sources we walk (not “% of entire monorepo” if we skip paths).</li>
+                <li><strong>Time saved</strong> — editorial estimate: 3 minutes saved per rewrite, displayed in the most readable unit.</li>
+                <li><strong>False positives</strong> — not auto-detected today; <code>0</code> means “none reported”.</li>
+              </ul>
+              <p style="margin-top: 0.75rem">
+                <strong>0 rewrites</strong> on a green run often means the repo uses <strong>viem</strong> only (e.g. wagmi v2), <strong>JSBI</strong> instead of <code>ethers.BigNumber</code> (e.g. Uniswap v3-sdk), or <code>@ethersproject/*</code> patterns we do not rewrite yet — hover the warning on the rewrites cell for a short checklist.
+                Some repos scan many files but match few strings (e.g. Solidity-heavy trees) — low Impact is expected until deeper rules land.
+                Failed runs show <strong>Failed</strong> with a tooltip on the row via the browser’s title attribute on the status cell.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="site-footer" style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--muted)">
+        <p style="margin: 0 0 0.5rem">
+          <strong>Hackathon checklist</strong> — Deterministic codemods · Quantum scan · Optional Groq AI · Benchmarks export.
+          Codemod Registry publish &amp; demo video: follow <code>README.md</code> / <code>docs/BENCHMARKING.md</code>.
+        </p>
+        <p style="margin: 0">
+          <strong>Security:</strong> never commit API keys. Copy <code>.env.example</code> → <code>.env</code> and set <code>GROQ_API_KEY</code> locally.
+        </p>
+      </footer>
     </div>
 
     <script>
@@ -502,6 +896,566 @@
       }
 
       let catalogById = new Map();
+      let benchmarkRepoList = [];
+      const benchResults = {};
+
+      function repoKey(p) {
+        return p.owner + "/" + p.repo;
+      }
+
+      function benchStatusLabel(st) {
+        if (st === "success") return "OK";
+        if (st === "failed") return "Failed";
+        if (st === "running") return "Running…";
+        return "—";
+      }
+
+      function estHumanMinutes(rewrites) {
+        if (rewrites == null || rewrites <= 0) return 0;
+        return (rewrites * 3) / 60;
+      }
+
+      /** Human-readable time saved from rewrite count (3 min / rewrite). */
+      function formatTimeSavedFromRewrites(n) {
+        if (n == null || n <= 0) return "—";
+        const hoursSaved = (n * 3) / 60;
+        if (hoursSaved < 1) return Math.max(1, Math.round(hoursSaved * 60)) + " min";
+        if (hoursSaved < 8) return hoursSaved.toFixed(1) + " hours";
+        const daysSaved = hoursSaved / 8;
+        return daysSaved.toFixed(2) + " dev-days";
+      }
+
+      function impactPct(r) {
+        if (!r || r.status !== "success" || !r.filesScanned || r.filesScanned <= 0) return "—";
+        const p = (100 * (r.filesChanged || 0)) / r.filesScanned;
+        return (Math.round(p * 10) / 10).toFixed(1) + "%";
+      }
+
+      function impactColor(r) {
+        if (!r || r.status !== "success" || !r.filesScanned) return "var(--muted)";
+        const p = (100 * (r.filesChanged || 0)) / r.filesScanned;
+        if (p >= 15) return "var(--success)";
+        if (p >= 2) return "var(--warning)";
+        return "var(--muted)";
+      }
+
+      function statusCellHtml(repo, r) {
+        if (!r) return escapeHtml("Pending");
+        if (r.status === "failed") {
+          const tip = escapeHtml((r.error || "error").slice(0, 280));
+          return (
+            "<span style=\"color:var(--danger);font-weight:600\" title=\"" +
+            tip +
+            "\">Failed \u26A0\uFE0F</span>"
+          );
+        }
+        return escapeHtml(benchStatusLabel(r.status));
+      }
+
+      function aiFilesLabel(r) {
+        if (!r || r.aiMetrics == null) return "—";
+        const n = r.aiMetrics.filesProcessed || 0;
+        return n === 0 ? "0" : String(n);
+      }
+
+      function confidenceCellHtml(conf) {
+        const c = conf || "high";
+        if (c === "medium") {
+          return (
+            "<span class=\"conf-med\" title=\"Review imports and call sites\">🟡 Medium (review diff)</span>"
+          );
+        }
+        if (c === "low") {
+          return "<span class=\"conf-low\" title=\"Heuristic or AI-suggested\">🔴 Low</span>";
+        }
+        return (
+          "<span class=\"conf-high\" title=\"Deterministic v5→v6 string patterns\">🟢 High (deterministic)</span>"
+        );
+      }
+
+      function readinessPct(r) {
+        if (!r || r.status !== "success") return "—";
+        const q = r.quantumInsights;
+        if (!q || q.latentBigNumberMarkers == null || q.latentBigNumberMarkers <= 0) return "—";
+        const rew = r.rewrites || 0;
+        const m = q.latentBigNumberMarkers;
+        const rawPct = (100 * rew) / m;
+        const capped = Math.min(100, rawPct);
+        return (Math.round(capped * 10) / 10).toFixed(1) + "%";
+      }
+
+      function readinessTitleAttr(r) {
+        if (!r || r.status !== "success" || !r.quantumInsights) return "";
+        const m = r.quantumInsights.latentBigNumberMarkers;
+        if (m == null || m <= 0) return "";
+        const rew = r.rewrites || 0;
+        const rawPct = (100 * rew) / m;
+        let s = "Rewrites ÷ quantum latent BigNumber markers: " + rew + " / " + m;
+        if (rawPct > 100) {
+          s += " (raw ratio " + rawPct.toFixed(1) + "% — shown capped at 100%)";
+        }
+        return s;
+      }
+
+      function rewritesCellHtml(r) {
+        if (!r || r.rewrites == null) return "—";
+        const n = r.rewrites;
+        const base = escapeHtml(String(n));
+        if (r.status === "success" && n === 0) {
+          const tip =
+            "0 rewrites detected — This repository appears to use viem instead of ethers.js, or ethers patterns are not in scanned files. Also possible: JSBI-heavy SDKs, @ethersproject/* gaps, Solidity-heavy trees, unscanned paths, or already migrated.";
+          return (
+            "<span class=\"bench-zero-rew\" title=\"" +
+            escapeHtml(tip) +
+            "\">" +
+            base +
+            " ⚠️</span>"
+          );
+        }
+        return base;
+      }
+
+      function renderBenchTable() {
+        const tbody = document.getElementById("benchBody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        for (const repo of benchmarkRepoList) {
+          const key = repoKey(repo);
+          const r = benchResults[key];
+          const url = repo.url || "https://github.com/" + repo.owner + "/" + repo.repo;
+          const tr = document.createElement("tr");
+          const runBtn = document.createElement("button");
+          runBtn.type = "button";
+          runBtn.className = "btn-secondary";
+          runBtn.style.cssText = "font-size:0.75rem;padding:0.35rem 0.6rem";
+          runBtn.textContent = "Run";
+          runBtn.disabled = r && r.status === "running";
+          runBtn.addEventListener("click", () => runBenchmarkRow(repo));
+
+          const tdRun = document.createElement("td");
+          tdRun.appendChild(runBtn);
+
+          const imp = impactPct(r);
+          const ic = impactColor(r);
+          tr.innerHTML =
+            "<td><a href=\"" +
+            escapeHtml(url) +
+            "\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent);font-weight:600\">" +
+            escapeHtml(repo.name || key) +
+            "</a></td><td style=\"max-width:12rem;font-size:0.8rem;color:var(--muted)\">" +
+            escapeHtml(repo.description || "") +
+            "</td><td>" +
+            statusCellHtml(repo, r) +
+            "</td><td class=\"num\">" +
+            escapeHtml(r && r.filesScanned != null ? String(r.filesScanned) : "—") +
+            "</td><td class=\"num\">" +
+            escapeHtml(r && r.filesChanged != null ? String(r.filesChanged) : "—") +
+            "</td><td class=\"num\">" +
+            rewritesCellHtml(r) +
+            "</td><td class=\"num\">" +
+            escapeHtml(r && r.distinctRuleCount != null ? String(r.distinctRuleCount) : "—") +
+            "</td><td class=\"num\" title=\"" +
+            escapeHtml(readinessTitleAttr(r)) +
+            "\">" +
+            escapeHtml(readinessPct(r)) +
+            "</td><td class=\"num\" style=\"color:" +
+            ic +
+            "\">" +
+            escapeHtml(imp) +
+            (r && r.status === "success" && r.filesScanned
+              ? " <span style=\"font-size:0.68rem;opacity:0.85\">(" +
+                escapeHtml(String(r.filesChanged)) +
+                "/" +
+                escapeHtml(String(r.filesScanned)) +
+                ")</span>"
+              : "") +
+            "</td><td class=\"num\">" +
+            escapeHtml(aiFilesLabel(r)) +
+            "</td><td class=\"num\" style=\"font-size:0.78rem\">" +
+            escapeHtml(formatTimeSavedFromRewrites(r && r.rewrites != null ? r.rewrites : 0)) +
+            "</td><td class=\"num\">" +
+            escapeHtml(r && r.falsePositives != null ? String(r.falsePositives) : "—") +
+            "</td><td class=\"num\">" +
+            escapeHtml(r && r.durationMs != null ? String(r.durationMs) : "—") +
+            "</td>";
+          tr.appendChild(tdRun);
+          tbody.appendChild(tr);
+        }
+      }
+
+      function aggregateRulesAcrossBench() {
+        const m = new Map();
+        for (const repo of benchmarkRepoList) {
+          const r = benchResults[repoKey(repo)];
+          if (!r || r.status !== "success" || !r.appliedRulesSummary) continue;
+          for (const row of r.appliedRulesSummary) {
+            m.set(row.id, (m.get(row.id) || 0) + row.rewriteCount);
+          }
+        }
+        return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14);
+      }
+
+      function renderBenchBarChart() {
+        const wrap = document.getElementById("benchBarChart");
+        const inner = document.getElementById("benchBarChartInner");
+        if (!wrap || !inner) return;
+        const vals = Object.keys(benchResults);
+        if (!vals.length) {
+          wrap.classList.add("hidden");
+          inner.innerHTML = "";
+          return;
+        }
+        let maxR = 1;
+        for (const repo of benchmarkRepoList) {
+          const r = benchResults[repoKey(repo)];
+          if (r && r.status === "success" && r.rewrites > maxR) maxR = r.rewrites;
+        }
+        const parts = [];
+        for (const repo of benchmarkRepoList) {
+          const key = repoKey(repo);
+          const r = benchResults[key];
+          const nm = escapeHtml((repo.name || key).split("/").pop() || key);
+          const rw = r && r.rewrites != null ? r.rewrites : 0;
+          const pct = maxR > 0 ? (rw / maxR) * 100 : 0;
+          const imp =
+            r && r.status === "success" && r.filesScanned > 0
+              ? ((100 * (r.filesChanged || 0)) / r.filesScanned).toFixed(1) + "% files"
+              : "—";
+          parts.push(
+            "<div class=\"bench-bar-row\"><span class=\"name\" title=\"" +
+            escapeHtml(key) +
+            "\">" +
+            nm +
+            "</span><span class=\"bench-bar-meta\">" +
+            escapeHtml(String(rw)) +
+            " · " +
+            escapeHtml(imp) +
+            "</span><div class=\"bench-bar-track\"><div class=\"bench-bar-fill\" style=\"width:" +
+            pct.toFixed(1) +
+            "%\"></div></div></div>"
+          );
+        }
+        inner.innerHTML = parts.join("");
+        wrap.classList.remove("hidden");
+      }
+
+      function renderRuleMixChart() {
+        const wrap = document.getElementById("benchRuleMix");
+        const inner = document.getElementById("benchRuleMixInner");
+        if (!wrap || !inner) return;
+        const top = aggregateRulesAcrossBench();
+        if (!top.length) {
+          wrap.classList.add("hidden");
+          inner.innerHTML = "";
+          return;
+        }
+        let maxC = top[0][1] || 1;
+        const parts = [];
+        for (const [id, c] of top) {
+          const pct = (c / maxC) * 100;
+          parts.push(
+            "<div class=\"bench-bar-row\"><span class=\"name\" title=\"" +
+            escapeHtml(id) +
+            "\">" +
+            escapeHtml(id) +
+            "</span><span class=\"bench-bar-meta\">" +
+            escapeHtml(String(c)) +
+            "</span><div class=\"bench-bar-track\"><div class=\"bench-bar-fill\" style=\"width:" +
+            pct.toFixed(1) +
+            "%\"></div></div></div>"
+          );
+        }
+        inner.innerHTML = parts.join("");
+        wrap.classList.remove("hidden");
+      }
+
+      function updateBenchSummaryTop() {
+        const top = document.getElementById("benchSummaryTop");
+        if (!top) return;
+        const vals = Object.values(benchResults);
+        if (!vals.length) {
+          top.classList.add("hidden");
+          top.innerHTML = "";
+          return;
+        }
+        const n = benchmarkRepoList.length;
+        const ok = vals.filter((x) => x.status === "success").length;
+        const failed = vals.filter((x) => x.status === "failed").length;
+        const totalRew = vals.reduce((s, x) => s + (x.rewrites || 0), 0);
+        const totalMs = vals.reduce((s, x) => s + (x.durationMs || 0), 0);
+        const rate = n ? ((100 * ok) / n).toFixed(1) : "0";
+        const savedLabel = formatTimeSavedFromRewrites(totalRew);
+        const secPer = ok > 0 ? (totalMs / 1000 / ok).toFixed(1) : "—";
+        const totalFp = vals.reduce((s, x) => s + (x.falsePositives || 0), 0);
+        const fpFoot =
+          totalFp === 0
+            ? "None reported — codemods are deterministic"
+            : escapeHtml(String(totalFp)) + " reported — review diffs";
+        top.classList.remove("hidden");
+        top.innerHTML =
+          "<div class=\"bench-kpi-row\">" +
+          "<div class=\"bench-kpi ok\"><div class=\"big\">" +
+          ok +
+          "/" +
+          n +
+          "</div><div class=\"sub\">Repositories successful</div><div class=\"foot\">" +
+          rate +
+          "% success rate</div></div>" +
+          "<div class=\"bench-kpi rew\"><div class=\"big\">" +
+          totalRew +
+          "</div><div class=\"sub\">Automatic rewrites</div><div class=\"foot\">~" +
+          escapeHtml(savedLabel) +
+          " saved (est.)</div></div>" +
+          "<div class=\"bench-kpi time\"><div class=\"big\">" +
+          (totalMs / 1000).toFixed(1) +
+          "s</div><div class=\"sub\">Total wall time</div><div class=\"foot\">~" +
+          secPer +
+          " s / successful repo</div></div>" +
+          "<div class=\"bench-kpi fp\"><div class=\"big\">" +
+          totalFp +
+          "</div><div class=\"sub\">False positives (reported)</div><div class=\"foot\">" +
+          fpFoot +
+          "</div></div>" +
+          "</div>";
+      }
+
+      function updateBenchSummary() {
+        updateBenchSummaryTop();
+        renderBenchBarChart();
+        renderRuleMixChart();
+        const el = document.getElementById("benchSummary");
+        if (!el) return;
+        const vals = Object.values(benchResults);
+        if (!vals.length) {
+          el.classList.add("hidden");
+          el.innerHTML = "";
+          return;
+        }
+        const ok = vals.filter((x) => x.status === "success").length;
+        const failed = vals.filter((x) => x.status === "failed").length;
+        const totalRew = vals.reduce((s, x) => s + (x.rewrites || 0), 0);
+        const totalMs = vals.reduce((s, x) => s + (x.durationMs || 0), 0);
+        let impSum = 0;
+        let impN = 0;
+        for (const repo of benchmarkRepoList) {
+          const r = benchResults[repoKey(repo)];
+          if (r && r.status === "success" && r.filesScanned > 0) {
+            impSum += (100 * (r.filesChanged || 0)) / r.filesScanned;
+            impN += 1;
+          }
+        }
+        const avgImp = impN ? (impSum / impN).toFixed(1) : "—";
+        el.classList.remove("hidden");
+        el.innerHTML =
+          "<div class=\"summary-card\"><div class=\"val\">" +
+          ok +
+          "/" +
+          benchmarkRepoList.length +
+          "</div><div class=\"lbl\">Successful</div></div>" +
+          "<div class=\"summary-card\"><div class=\"val\" style=\"color:var(--danger)\">" +
+          failed +
+          "</div><div class=\"lbl\">Failed</div></div>" +
+          "<div class=\"summary-card\"><div class=\"val\">" +
+          totalRew +
+          "</div><div class=\"lbl\">Total rewrites</div></div>" +
+          "<div class=\"summary-card\"><div class=\"val\">" +
+          avgImp +
+          (avgImp === "—" ? "" : "%") +
+          "</div><div class=\"lbl\">Avg Impact</div></div>" +
+          "<div class=\"summary-card\"><div class=\"val\">" +
+          (totalMs / 1000).toFixed(1) +
+          "s</div><div class=\"lbl\">Total time</div></div>";
+      }
+
+      async function runBenchmarkRow(repo) {
+        const key = repoKey(repo);
+        const url = repo.url || "https://github.com/" + repo.owner + "/" + repo.repo;
+        const useAi = document.getElementById("benchAi") && document.getElementById("benchAi").checked;
+        benchResults[key] = {
+          status: "running",
+          repoName: key,
+          filesScanned: 0,
+          filesChanged: 0,
+          rewrites: 0,
+          distinctRuleCount: 0,
+          rulesTriggered: [],
+          falsePositives: 0,
+          durationMs: 0,
+          appliedRulesSummary: null,
+        };
+        renderBenchTable();
+        try {
+          const res = await fetch("/api/benchmark", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              repoUrl: url,
+              ref: repo.ref || undefined,
+              quantum: true,
+              ai: useAi,
+            }),
+          });
+          const data = await res.json();
+          benchResults[key] = {
+            status: data.ok ? "success" : "failed",
+            repoName: data.repoName || key,
+            filesScanned: data.filesScanned,
+            filesChanged: data.filesChanged,
+            rewrites: data.rewrites,
+            distinctRuleCount: data.distinctRuleCount,
+            rulesTriggered: data.rulesTriggered || [],
+            falsePositives: data.falsePositives ?? 0,
+            durationMs: data.durationMs,
+            error: data.error,
+            quantumInsights: data.quantumInsights,
+            aiMetrics: data.aiMetrics || null,
+            aiNotes: data.aiNotes || null,
+            appliedRulesSummary: data.appliedRulesSummary || null,
+          };
+        } catch (e) {
+          benchResults[key] = {
+            status: "failed",
+            repoName: key,
+            filesScanned: 0,
+            filesChanged: 0,
+            rewrites: 0,
+            distinctRuleCount: 0,
+            rulesTriggered: [],
+            falsePositives: 0,
+            durationMs: 0,
+            error: String(e),
+            appliedRulesSummary: null,
+          };
+        }
+        renderBenchTable();
+        updateBenchSummary();
+      }
+
+      function csvEscape(cell) {
+        const s = String(cell ?? "");
+        if (/[",\n]/.test(s)) return "\"" + s.replace(/"/g, '""') + "\"";
+        return s;
+      }
+
+      function exportBenchCsv() {
+        const rows = [
+          [
+            "repository",
+            "status",
+            "filesScanned",
+            "filesChanged",
+            "rewrites",
+            "distinctRules",
+            "readinessPct",
+            "impactPct",
+            "aiFiles",
+            "timeSavedEst",
+            "falsePositives",
+            "durationMs",
+            "error",
+          ],
+        ];
+        for (const repo of benchmarkRepoList) {
+          const key = repoKey(repo);
+          const r = benchResults[key];
+          if (!r) continue;
+          rows.push([
+            key,
+            r.status,
+            r.filesScanned,
+            r.filesChanged,
+            r.rewrites,
+            r.distinctRuleCount,
+            readinessPct(r).replace("%", ""),
+            impactPct(r).replace("%", ""),
+            r.aiMetrics ? r.aiMetrics.filesProcessed : "",
+            formatTimeSavedFromRewrites(r.rewrites || 0),
+            r.falsePositives,
+            r.durationMs,
+            r.error || "",
+          ]);
+        }
+        const blob = new Blob([rows.map((row) => row.map(csvEscape).join(",")).join("\n")], {
+          type: "text/csv;charset=utf-8",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "doublesigma-benchmark-" + new Date().toISOString().slice(0, 19).replace(/:/g, "-") + ".csv";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function exportBenchJson() {
+        const out = { generatedAt: new Date().toISOString(), rows: [] };
+        for (const repo of benchmarkRepoList) {
+          const key = repoKey(repo);
+          const r = benchResults[key];
+          if (!r) continue;
+          out.rows.push({
+            repo: key,
+            url: repo.url || "https://github.com/" + repo.owner + "/" + repo.repo,
+            ref: repo.ref,
+            expectedPatterns: repo.expectedPatterns,
+            difficulty: repo.difficulty,
+            ...r,
+            readinessPct: readinessPct(r),
+            impactPct: impactPct(r),
+            timeSavedEst: formatTimeSavedFromRewrites(r.rewrites || 0),
+            humanEstMinutes: estHumanMinutes(r.rewrites || 0),
+          });
+        }
+        const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "doublesigma-benchmark-" + new Date().toISOString().slice(0, 19).replace(/:/g, "-") + ".json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function generateBenchReportHtml() {
+        let rows = "";
+        for (const repo of benchmarkRepoList) {
+          const key = repoKey(repo);
+          const r = benchResults[key];
+          if (!r) continue;
+          rows +=
+            "<tr><td>" +
+            escapeHtml(key) +
+            "</td><td>" +
+            escapeHtml(r.status) +
+            "</td><td>" +
+            escapeHtml(String(r.filesScanned)) +
+            "</td><td>" +
+            escapeHtml(String(r.filesChanged)) +
+            "</td><td>" +
+            escapeHtml(String(r.rewrites)) +
+            "</td><td>" +
+            escapeHtml(readinessPct(r)) +
+            "</td><td>" +
+            escapeHtml(impactPct(r)) +
+            "</td><td>" +
+            escapeHtml(formatTimeSavedFromRewrites(r.rewrites || 0)) +
+            "</td><td>" +
+            escapeHtml(aiFilesLabel(r)) +
+            "</td><td>" +
+            escapeHtml(String(r.durationMs)) +
+            "</td></tr>";
+        }
+        const html =
+          "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>DoubleSigma benchmark</title>" +
+          "<style>body{font-family:system-ui,sans-serif;margin:2rem}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px 8px}</style></head><body>" +
+          "<h1>DoubleSigma benchmark report</h1><p>Generated " +
+          new Date().toISOString() +
+          "</p><table><thead><tr><th>Repo</th><th>Status</th><th>Scanned</th><th>Changed</th><th>Rewrites</th><th>Readiness</th><th>Impact</th><th>Time saved (est.)</th><th>AI files</th><th>ms</th></tr></thead><tbody>" +
+          rows +
+          "</tbody></table></body></html>";
+        const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "doublesigma-benchmark-report-" + new Date().toISOString().slice(0, 19).replace(/:/g, "-") + ".html";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
 
       async function fetchJsonFromUrls(urls, label) {
         let lastErr = "";
@@ -544,7 +1498,9 @@
             escapeHtml(r.title) +
             "</strong><br/><span style=\"color:var(--muted);font-size:0.88em\">" +
             escapeHtml(r.description) +
-            "</span></td><td><code>" +
+            "</span></td><td>" +
+            confidenceCellHtml(r.confidence) +
+            "</td><td><code>" +
             escapeHtml(r.v5Pattern) +
             "</code></td><td><code>" +
             escapeHtml(r.v6Replacement) +
@@ -583,6 +1539,9 @@
             });
             grid.appendChild(btn);
           }
+          benchmarkRepoList = list;
+          renderBenchTable();
+          updateBenchSummaryTop();
         } catch (e) {
           loading.textContent = "Could not load presets: " + e;
         }
@@ -687,6 +1646,61 @@
         noMatchPre.textContent = ids.join("\n");
       }
 
+      document.getElementById("navMigrate").addEventListener("click", () => {
+        document.getElementById("pageMigrate").classList.remove("hidden");
+        document.getElementById("pageBenchmarks").classList.add("hidden");
+        document.getElementById("navMigrate").classList.add("active");
+        document.getElementById("navBenchmarks").classList.remove("active");
+      });
+      document.getElementById("navBenchmarks").addEventListener("click", () => {
+        document.getElementById("pageMigrate").classList.add("hidden");
+        document.getElementById("pageBenchmarks").classList.remove("hidden");
+        document.getElementById("navBenchmarks").classList.add("active");
+        document.getElementById("navMigrate").classList.remove("active");
+        renderBenchTable();
+      });
+
+      document.getElementById("benchRunAll").addEventListener("click", async () => {
+        const st = document.getElementById("benchGlobalStatus");
+        const btn = document.getElementById("benchRunAll");
+        const wrap = document.getElementById("benchProgressWrap");
+        const bar = document.getElementById("benchProgressBar");
+        const lab = document.getElementById("benchProgressLabel");
+        btn.disabled = true;
+        wrap.classList.remove("hidden");
+        st.textContent = "Running full suite…";
+        const n = benchmarkRepoList.length;
+        const t0 = performance.now();
+        try {
+          for (let i = 0; i < n; i += 1) {
+            const repo = benchmarkRepoList[i];
+            const frac = (i / n) * 100;
+            bar.style.width = frac + "%";
+            const elapsedSec = (performance.now() - t0) / 1000;
+            const done = i;
+            const etaSec = done > 0 && i < n ? ((n - i) * elapsedSec) / done : null;
+            const etaPart =
+              etaSec != null && Number.isFinite(etaSec) && etaSec > 0.5
+                ? " · est. " + Math.round(etaSec) + "s remaining"
+                : "";
+            lab.textContent =
+              "Running benchmarks: " + (i + 1) + "/" + n + " — current: " + repoKey(repo) + etaPart;
+            st.textContent = lab.textContent;
+            await runBenchmarkRow(repo);
+            bar.style.width = (((i + 1) / n) * 100).toFixed(2) + "%";
+          }
+          st.textContent = "Done.";
+          bar.style.width = "100%";
+        } catch (e) {
+          st.textContent = String(e);
+        } finally {
+          btn.disabled = false;
+        }
+      });
+      document.getElementById("benchExportCsv").addEventListener("click", () => exportBenchCsv());
+      document.getElementById("benchExportJson").addEventListener("click", () => exportBenchJson());
+      document.getElementById("benchGenerateReport").addEventListener("click", () => generateBenchReportHtml());
+
       loadCatalog().catch((e) => {
         document.getElementById("catalogLoading").textContent = "Catalog error: " + e;
       });
@@ -697,6 +1711,7 @@
         status.className = "status";
         out.textContent = "";
         diffsEl.innerHTML = "";
+        document.getElementById("aiNotesBlock").classList.add("hidden");
         appliedBlock.classList.add("hidden");
         noMatchBlock.classList.add("hidden");
         highlightRules([]);
@@ -753,12 +1768,18 @@
           }
           renderApplied(data.appliedRulesSummary);
           renderNoMatch(data.rulesWithoutMatch);
+          const extra = {};
+          if (data.quantumInsights) extra.quantumInsights = data.quantumInsights;
+          if (data.aiMetrics) extra.aiMetrics = data.aiMetrics;
+          if (data.aiNotes) extra.aiNotes = String(data.aiNotes).slice(0, 6000);
           const metricsBlock =
             JSON.stringify(data.metrics, null, 2) +
-            (data.quantumInsights
-              ? "\n" + JSON.stringify({ quantumInsights: data.quantumInsights }, null, 2)
-              : "");
+            (Object.keys(extra).length ? "\n" + JSON.stringify(extra, null, 2) : "");
           out.textContent = data.log + "\n" + metricsBlock;
+          if (data.aiNotes) {
+            document.getElementById("aiNotesPre").textContent = data.aiNotes;
+            document.getElementById("aiNotesBlock").classList.remove("hidden");
+          }
           renderDiffs(data.diffs);
         } catch (e) {
           status.className = "status err";

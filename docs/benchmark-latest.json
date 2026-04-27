@@ -1,122 +1,254 @@
 {
-  "generatedAt": "2026-04-27T22:11:02.657Z",
+  "generatedAt": "2026-04-27T23:31:47.533Z",
   "rows": [
-    {
-      "id": "compound-js",
-      "owner": "compound-finance",
-      "repo": "compound-js",
-      "ref": "master",
-      "ok": true,
-      "error": null,
-      "scannedFiles": 30,
-      "changedFiles": 6,
-      "rewrites": 9,
-      "distinctRules": 3,
-      "durationMs": 1246
-    },
     {
       "id": "flashbots-ethers-provider",
       "owner": "flashbots",
       "repo": "ethers-provider-flashbots-bundle",
       "ref": "master",
+      "name": "flashbots/ethers-provider-flashbots-bundle",
+      "description": "Flashbots bundle provider for ethers.js v5",
+      "url": "https://github.com/flashbots/ethers-provider-flashbots-bundle",
+      "tags": [
+        "provider",
+        "flashbots",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 15,
+      "difficulty": "medium",
       "ok": true,
       "error": null,
       "scannedFiles": 3,
       "changedFiles": 3,
       "rewrites": 3,
       "distinctRules": 1,
-      "durationMs": 587
+      "durationMs": 873,
+      "quantumInsights": {
+        "superpositionCoverage": 0.038,
+        "latentBigNumberMarkers": 69,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 6,
+        "summary": "quantum scan: latent BN/ops≈69, nested providers≈0, .deployed()≈0, @ethersproject≈6 (files=3)"
+      }
     },
     {
-      "id": "pooltogether-v4-client",
-      "owner": "pooltogether",
-      "repo": "v4-client-js",
+      "id": "uniswap-v3-sdk",
+      "owner": "Uniswap",
+      "repo": "v3-sdk",
       "ref": "main",
+      "name": "Uniswap/v3-sdk",
+      "description": "Uniswap V3 SDK (heavy ethers v5 usage)",
+      "url": "https://github.com/Uniswap/v3-sdk",
+      "tags": [
+        "defi",
+        "uniswap",
+        "ethers-v5",
+        "bigint-heavy"
+      ],
+      "expectedPatterns": 847,
+      "difficulty": "hard",
       "ok": true,
       "error": null,
-      "scannedFiles": 37,
-      "changedFiles": 1,
-      "rewrites": 1,
+      "scannedFiles": 63,
+      "changedFiles": 8,
+      "rewrites": 8,
       "distinctRules": 1,
-      "durationMs": 639
+      "durationMs": 384,
+      "quantumInsights": {
+        "superpositionCoverage": 0.6,
+        "latentBigNumberMarkers": 30,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 12,
+        "summary": "quantum scan: latent BN/ops≈30, nested providers≈0, .deployed()≈0, @ethersproject≈12 (files=63)"
+      }
     },
     {
-      "id": "snapshot-js",
-      "owner": "snapshot-labs",
-      "repo": "snapshot.js",
-      "ref": "master",
+      "id": "opensea-js",
+      "owner": "ProjectOpenSea",
+      "repo": "opensea-js",
+      "ref": "main",
+      "name": "ProjectOpenSea/opensea-js",
+      "description": "OpenSea JavaScript SDK",
+      "url": "https://github.com/ProjectOpenSea/opensea-js",
+      "tags": [
+        "nft",
+        "marketplace",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 523,
+      "difficulty": "hard",
       "ok": true,
       "error": null,
-      "scannedFiles": 59,
+      "scannedFiles": 113,
+      "changedFiles": 5,
+      "rewrites": 5,
+      "distinctRules": 1,
+      "durationMs": 620,
+      "quantumInsights": {
+        "superpositionCoverage": 0.991,
+        "latentBigNumberMarkers": 1,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 0,
+        "summary": "quantum scan: latent BN/ops≈1, nested providers≈0, .deployed()≈0, @ethersproject≈0 (files=113)"
+      }
+    },
+    {
+      "id": "wagmi-core",
+      "owner": "wagmi-dev",
+      "repo": "wagmi",
+      "ref": "main",
+      "name": "wagmi-dev/wagmi",
+      "description": "wagmi React hooks (TypeScript; often ethers/viem adjacent patterns in tooling)",
+      "url": "https://github.com/wagmi-dev/wagmi",
+      "tags": [
+        "wallet",
+        "react",
+        "typescript"
+      ],
+      "expectedPatterns": 400,
+      "difficulty": "medium",
+      "ok": true,
+      "error": null,
+      "scannedFiles": 1069,
       "changedFiles": 0,
       "rewrites": 0,
       "distinctRules": 0,
-      "durationMs": 2175
+      "durationMs": 2850,
+      "quantumInsights": {
+        "superpositionCoverage": 0.975,
+        "latentBigNumberMarkers": 27,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 0,
+        "summary": "quantum scan: latent BN/ops≈27, nested providers≈0, .deployed()≈0, @ethersproject≈0 (files=1069)"
+      }
     },
     {
-      "id": "arbitrum-token-bridge-sdk",
-      "owner": "OffchainLabs",
-      "repo": "token-bridge-sdk",
-      "ref": "master",
+      "id": "rainbowkit",
+      "owner": "rainbow-me",
+      "repo": "rainbowkit",
+      "ref": "main",
+      "name": "rainbow-me/rainbowkit",
+      "description": "RainbowKit wallet connection for React",
+      "url": "https://github.com/rainbow-me/rainbowkit",
+      "tags": [
+        "wallet",
+        "react",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 678,
+      "difficulty": "hard",
       "ok": true,
       "error": null,
-      "scannedFiles": 10,
-      "changedFiles": 0,
-      "rewrites": 0,
-      "distinctRules": 0,
-      "durationMs": 1269
+      "scannedFiles": 670,
+      "changedFiles": 24,
+      "rewrites": 24,
+      "distinctRules": 1,
+      "durationMs": 3992,
+      "quantumInsights": {
+        "superpositionCoverage": 0.927,
+        "latentBigNumberMarkers": 53,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 0,
+        "summary": "quantum scan: latent BN/ops≈53, nested providers≈0, .deployed()≈0, @ethersproject≈0 (files=670)"
+      }
     },
     {
-      "id": "ribbon-vaults",
-      "owner": "ribbon-finance",
-      "repo": "ribbon-v2",
+      "id": "aave-v3-core",
+      "owner": "aave",
+      "repo": "aave-v3-core",
       "ref": "master",
+      "name": "aave/aave-v3-core",
+      "description": "Aave V3 core (Solidity + TS tooling; TS may reference ethers patterns)",
+      "url": "https://github.com/aave/aave-v3-core",
+      "tags": [
+        "lending",
+        "defi",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 1247,
+      "difficulty": "hard",
       "ok": true,
       "error": null,
-      "scannedFiles": 79,
-      "changedFiles": 14,
+      "scannedFiles": 81,
+      "changedFiles": 15,
       "rewrites": 15,
-      "distinctRules": 4,
-      "durationMs": 6228
+      "distinctRules": 2,
+      "durationMs": 1283,
+      "quantumInsights": {
+        "superpositionCoverage": 0.036,
+        "latentBigNumberMarkers": 2104,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 14,
+        "latentEthersProjectImports": 25,
+        "summary": "quantum scan: latent BN/ops≈2104, nested providers≈0, .deployed()≈14, @ethersproject≈25 (files=81)"
+      }
     },
     {
-      "id": "eth-infinitism-bundler",
-      "owner": "eth-infinitism",
-      "repo": "bundler",
+      "id": "hardhat",
+      "owner": "NomicFoundation",
+      "repo": "hardhat",
       "ref": "main",
+      "name": "NomicFoundation/hardhat",
+      "description": "Hardhat development environment (ethers in tooling/tests)",
+      "url": "https://github.com/NomicFoundation/hardhat",
+      "tags": [
+        "tooling",
+        "development",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 892,
+      "difficulty": "hard",
       "ok": true,
       "error": null,
-      "scannedFiles": 90,
-      "changedFiles": 16,
-      "rewrites": 18,
-      "distinctRules": 4,
-      "durationMs": 1556
+      "scannedFiles": 1580,
+      "changedFiles": 29,
+      "rewrites": 29,
+      "distinctRules": 2,
+      "durationMs": 4358,
+      "quantumInsights": {
+        "superpositionCoverage": 0.921,
+        "latentBigNumberMarkers": 132,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 3,
+        "summary": "quantum scan: latent BN/ops≈132, nested providers≈0, .deployed()≈0, @ethersproject≈3 (files=1580)"
+      }
     },
     {
-      "id": "safe-global-safe-core-sdk",
-      "owner": "safe-global",
-      "repo": "safe-core-sdk",
+      "id": "traderjoe-joe-v2",
+      "owner": "traderjoe-xyz",
+      "repo": "joe-v2",
       "ref": "main",
+      "name": "traderjoe-xyz/joe-v2",
+      "description": "Trader Joe V2 DEX",
+      "url": "https://github.com/traderjoe-xyz/joe-v2",
+      "tags": [
+        "defi",
+        "dex",
+        "ethers-v5"
+      ],
+      "expectedPatterns": 445,
+      "difficulty": "medium",
       "ok": true,
       "error": null,
-      "scannedFiles": 365,
-      "changedFiles": 13,
-      "rewrites": 13,
-      "distinctRules": 1,
-      "durationMs": 3983
-    },
-    {
-      "id": "graph-client",
-      "owner": "graphprotocol",
-      "repo": "graph-client",
-      "ref": "main",
-      "ok": true,
-      "error": null,
-      "scannedFiles": 59,
+      "scannedFiles": 0,
       "changedFiles": 0,
       "rewrites": 0,
       "distinctRules": 0,
-      "durationMs": 1514
+      "durationMs": 685,
+      "quantumInsights": {
+        "superpositionCoverage": 1,
+        "latentBigNumberMarkers": 0,
+        "latentNestedProviderMarkers": 0,
+        "latentDeployedCalls": 0,
+        "latentEthersProjectImports": 0,
+        "summary": "quantum scan: latent BN/ops≈0, nested providers≈0, .deployed()≈0, @ethersproject≈0 (files=0)"
+      }
     }
   ]
 }

@@ -29,5 +29,7 @@ export function payloadFromLocalJob(job: MigrationJobResult): MigrateApiPayload 
     appliedRulesSummary,
     rulesWithoutMatch,
     quantumInsights: hasError || !job.options.quantum ? null : job.result.quantumInsights ?? null,
+    aiMetrics: hasError || !job.options.ai ? null : job.result.aiMetrics ?? null,
+    aiNotes: hasError || !job.options.ai ? null : job.result.aiNotes ?? null,
   };
 }

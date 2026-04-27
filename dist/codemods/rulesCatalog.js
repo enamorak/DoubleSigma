@@ -3,6 +3,8 @@
  * IDs are stable for API and UI.
  */
 import { BIGINT_MIGRATION_RULES } from "./02-bigint.js";
+import { CONTRACT_MIGRATION_RULES } from "./04-contracts.js";
+import { ETHERSPROJECT_RULES } from "./05-ethersproject.js";
 const DOCS = "https://docs.ethers.org/v6/migrating/";
 const CORE_RULES = [
     {
@@ -123,14 +125,20 @@ const CORE_RULES = [
         apply: (source) => source.replace(/ethers\.utils\.arrayify\(/g, "ethers.getBytes("),
     },
 ];
-export const CODEMOD_RULES = [...CORE_RULES, ...BIGINT_MIGRATION_RULES];
+export const CODEMOD_RULES = [
+    ...CORE_RULES,
+    ...ETHERSPROJECT_RULES,
+    ...BIGINT_MIGRATION_RULES,
+    ...CONTRACT_MIGRATION_RULES,
+];
 export function getCodemodCatalog() {
-    return CODEMOD_RULES.map(({ id, title, description, v5Pattern, v6Replacement, docsUrl }) => ({
+    return CODEMOD_RULES.map(({ id, title, description, v5Pattern, v6Replacement, docsUrl, confidence }) => ({
         id,
         title,
         description,
         v5Pattern,
         v6Replacement,
         docsUrl,
+        confidence: confidence ?? "high",
     }));
 }

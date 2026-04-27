@@ -54,4 +54,16 @@ export const BIGINT_MIGRATION_RULES: CodemodRule[] = [
         (_, hex: string) => `BigInt('${hex}')`
       ),
   },
+  {
+    id: "bigint:from-simple-identifier",
+    title: "ethers.BigNumber.from(identifier) → BigInt(identifier)",
+    description:
+      "Only simple identifiers (no string literals, no calls). May be wrong if the value is a decimal string — review diffs.",
+    v5Pattern: "ethers.BigNumber.from(myVar)",
+    v6Replacement: "BigInt(myVar)",
+    docsUrl: DOCS,
+    confidence: "medium",
+    apply: (source) =>
+      source.replace(/ethers\.BigNumber\.from\(\s*([A-Za-z_$][\w$]*)\s*\)/g, "BigInt($1)"),
+  },
 ];

@@ -21,9 +21,8 @@ DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patt
 
 The page shows:
 
-- **Transformation catalog** (all rules from `src/codemods/rulesCatalog.ts`).
-- **Local path** or **GitHub HTTPS** migration form.
-- **Results**: log, metrics, **which transforms fired** (with jump links into the catalog), rules with no match, and diff snippets.
+- **Migrate** tab: transformation catalog, **local path** or **GitHub HTTPS** form, results (log, metrics, applied rules, diff snippets).
+- **Benchmarks** tab: the curated multi-repo list, **Run all** / per-repo **Run**, **Export CSV/JSON** (same dry-run engine as `npm run benchmark`).
 
 Production-style run: `npm run build` then **`npm start`** (same UI from `dist/`).
 
@@ -39,27 +38,33 @@ The dashboard UI is **English** (steps, presets, catalog). Run **`npm run ui`** 
 
 ---
 
-## Public GitHub benchmark (dry-run)
+## Why DoubleSigma? (competitive framing)
 
-We ran **`npm run benchmark`** (same engine as the UI: zip download + dry-run + rule counters) against **9** curated public repositories listed in [`data/benchmark-repositories.json`](data/benchmark-repositories.json). Raw output: [`docs/benchmark-latest.json`](docs/benchmark-latest.json).
+| | DoubleSigma | Manual migration | Generic codemods |
+|---|-------------|------------------|------------------|
+| **Ethers v5→v6 + `@ethersproject/*`** | ✅ Dedicated rule catalog (deterministic core + reviewed import-path rules) | ❌ Slow, inconsistent | ❌ No standard Web3 migration in public registry narratives |
+| **False positives (core rules)** | ✅ String-level deterministic transforms | ❌ Human error | ⚠️ Tool-dependent |
+| **Quantum-style latent scan** | ✅ Debt signals in API/UI | ❌ | ❌ |
+| **Optional AI (Groq)** | ✅ Advisory only (no auto-apply from LLM) | ❌ | ⚠️ Some tools |
+| **Real GitHub benchmarks** | ✅ 8-repo dry-run harness + CSV/JSON/HTML export | ❌ | ⚠️ Rare for this stack |
 
-| Repository | Ref | Scanned files | Changed files | Rewrites | Distinct rules | ms |
-|------------|-----|---------------:|-------------:|---------:|----------------:|---:|
-| compound-finance/compound-js | master | 30 | 6 | 9 | 3 | 1246 |
-| flashbots/ethers-provider-flashbots-bundle | master | 3 | 3 | 3 | 1 | 587 |
-| pooltogether/v4-client-js | main | 37 | 1 | 1 | 1 | 639 |
-| snapshot-labs/snapshot.js | master | 59 | 0 | 0 | 0 | 2175 |
-| OffchainLabs/token-bridge-sdk | master | 10 | 0 | 0 | 0 | 1269 |
-| ribbon-finance/ribbon-v2 | master | 79 | 14 | 15 | 4 | 6228 |
-| eth-infinitism/bundler | main | 90 | 16 | 18 | 4 | 1556 |
-| safe-global/safe-core-sdk | main | 365 | 13 | 13 | 1 | 3983 |
-| graphprotocol/graph-client | main | 59 | 0 | 0 | 0 | 1514 |
+The **Benchmarks** tab also shows **Readiness** (rewrites ÷ quantum `latentBigNumberMarkers` when &gt; 0) and explains **0 rewrites** (e.g. viem-only wagmi v2, JSBI-heavy Uniswap SDK, or patterns not covered yet).
 
-**Aggregate:** **732** source files scanned (sum over repos), **53** files received at least one rewrite, **59** individual rule applications, **9/9** runs completed without transport/API errors.
+---
 
-**Note:** `snapshot.js` and similar codebases often import **`@ethersproject/*`** instead of `ethers.providers.*` strings — our current string rules may match **zero** lines there; that is expected until AST-based rules land.
+## Benchmark results (multi-repo)
 
-Reproduce: `npm run benchmark`
+The canonical list lives in [`data/benchmark-repositories.json`](data/benchmark-repositories.json) (**8** public targets: Flashbots, Uniswap v3 SDK, OpenSea JS, wagmi, RainbowKit, Aave v3 core, Hardhat, Trader Joe v2 — each with `owner` / `repo` / `ref` for the zipball API plus optional `expectedPatterns` / `difficulty` for the UI). Jury-facing narrative and tables: [`docs/benchmark-results.md`](docs/benchmark-results.md).
+
+| How | What you get |
+|-----|----------------|
+| **UI** | **Benchmarks** tab → run one repo or **Run all** → **Export CSV / JSON**. |
+| **CLI** | `npm run benchmark` → writes [`docs/benchmark-latest.json`](docs/benchmark-latest.json) and prints a Markdown table. |
+| **API** | `POST /api/benchmark` with `{ "repoUrl": "https://github.com/owner/repo", "ref": "main" }` → JSON metrics (+ `quantumInsights` when enabled). |
+
+**Do not invent README numbers:** after a full run, copy the CLI table or summarize from `docs/benchmark-latest.json`, then refresh [`docs/benchmark-results.md`](docs/benchmark-results.md). Honest **Impact** (% of scanned JS/TS files touched) and time-saved estimates are defined in [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md) and in the Benchmarks tab UI.
+
+**Note:** Some repos are **viem-first** (e.g. wagmi v2), **JSBI-first** (e.g. Uniswap v3-sdk numerics), or Solidity-heavy — **0 rewrites** can be honest. The catalog now rewrites common **`@ethersproject/abi`** and **`@ethersproject/providers`** imports toward **`ethers`** (see rule confidence in the UI). Always **review diffs** before applying.
 
 ---
 
@@ -98,6 +103,8 @@ npm run migrate -- migrate --url https://github.com/owner/repo --keep-temp --qua
 | `GET` | `/` | Dashboard (static HTML). |
 | `GET` | `/api/rules` | JSON catalog: `{ rules: CodemodRuleMeta[] }`. |
 | `GET` | `/api/presets` | Curated GitHub repos for the UI (reads `data/benchmark-repositories.json`, then `public/presets.json`, then cwd fallbacks). |
+| `POST` | `/api/benchmark` | **`{ repoUrl, ref?, quantum?, ai? }`** → `BenchmarkRunResponse` (metrics, `rulesTriggered`, `quantumInsights`, optional `aiMetrics` / `aiNotes`). |
+| `GET` | `/presets.json` | Same JSON array as presets (explicit route + static fallback). |
 | `GET` | `/api/health` | Liveness. |
 | `POST` | `/api/migrate` | Body: **`{ path, mode?, quantum?, ai? }`** *or* **`{ url, ref?, mode?, cleanup?, quantum?, ai? }`**. |
 
@@ -109,12 +116,21 @@ Successful responses include:
 - `diffs` — short `-` / `+` previews per file.
 - `workDir` / `cleanedUp` — for GitHub runs (temp path; whether it was removed after dry-run).
 - `quantumInsights` — when `quantum: true`, a **read-only** scan of latent v5-shaped markers (BigNumber / `ethers.providers` / `.deployed()` / `@ethersproject/`) plus a heuristic score; **no extra file mutations**.
+- `aiMetrics` / `aiNotes` — when `ai: true` **and** `GROQ_API_KEY` is set, an **advisory** Groq pass reviews up to five changed files that still look v5-shaped. Output is **not** auto-applied; inspect `aiNotes` in the UI or JSON.
+
+### Groq (optional AI advisory)
+
+1. Copy [`.env.example`](.env.example) to `.env` in the project root.
+2. Set `GROQ_API_KEY` from [Groq Cloud Console](https://console.groq.com/) (free tier).
+3. Run `npm run ui` or CLI with `--ai`. **Never commit `.env` or paste keys into issues/chat.**
+
+If the key is missing, migrations still run; `aiMetrics` will show zeros and `aiNotes` will explain the skip.
 
 ---
 
 ## Implemented codemods
 
-Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core rules + conservative BigNumber literal rules from [`src/codemods/02-bigint.ts`](src/codemods/02-bigint.ts)). Examples:
+Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core + [`02-bigint.ts`](src/codemods/02-bigint.ts) + narrow [`04-contracts.ts`](src/codemods/04-contracts.ts)). Examples:
 
 - `ethers.providers.Web3Provider` → `ethers.BrowserProvider`
 - `ethers.providers.JsonRpcProvider` / `providers.JsonRpcProvider` → `ethers.JsonRpcProvider`
@@ -134,22 +150,28 @@ CLI ──┬──► migrationJob ──► dry-run / apply ──► codemods
       │
       └──► migrateFromGithub ──► githubArchive (zipball) ──► migrationJob
 
-server.ts ──► POST /api/migrate, GET /api/rules
-public/index.html ──► catalog + run form + appliedRulesSummary / diffs
+server.ts ──► POST /api/migrate, POST /api/benchmark, GET /api/rules, GET /api/presets, GET /presets.json
+public/index.html ──► Migrate + Benchmarks, Groq metrics, CSV/JSON/HTML export
 ```
 
 ---
 
 ## Tests (real public repos)
 
-Requires network (GitHub API + zipball).
-
 ```bash
 npm test
 ```
 
-- **`SKIP_NETWORK_TESTS=1`** — skip integration tests.
+Fast gate (build + tests; network integration skipped when `CI=true` unless `RUN_REAL_REPO_TESTS=1`):
+
+```bash
+npm run pre-submit
+```
+
+- **`SKIP_NETWORK_TESTS=1`** — skip integration tests locally.
 - In **CI**, set **`RUN_REAL_REPO_TESTS=1`** to enable network tests when `CI=true`.
+
+Full benchmarks hit GitHub for every row in `data/benchmark-repositories.json` — use `npm run benchmark` when you have time and a stable network.
 
 Manifest: [`tests/integration/repos.manifest.json`](tests/integration/repos.manifest.json) (4 repos; includes one repo where **zero** rewrites are expected so we only assert scan coverage).
 
@@ -159,7 +181,14 @@ Manifest: [`tests/integration/repos.manifest.json`](tests/integration/repos.mani
 
 - Replacements are **regex/string-based**, not full AST / jssg yet — narrow patterns only; review diffs.
 - **GitHub HTTPS only** for URL import (no GitLab in-app; unauthenticated API rate limits apply).
-- **`--ai`** is reserved; LLM fallback is not wired.
+- **Groq AI** is advisory only (no auto-apply); rate limits and model availability apply.
+- Narrow `await x.deployed()` removal can misfire if a non-ethers API uses the same shape — rare; still review.
+
+---
+
+## Case study
+
+See [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md).
 
 ---
 

@@ -1,6 +1,6 @@
 import { type AppliedRuleSummary } from "../api/ruleApplySummary.js";
 import { type DiffPreview } from "../diffPreview.js";
-import type { CliOptions, QuantumInsights } from "../types.js";
+import type { AiPassMetrics, CliOptions, QuantumInsights } from "../types.js";
 type MigrateFlags = Pick<CliOptions, "mode" | "quantum" | "ai">;
 export interface MigrateApiPayload {
     ok: boolean;
@@ -25,6 +25,10 @@ export interface MigrateApiPayload {
     rulesWithoutMatch: string[];
     /** Present when migration ran with `quantum: true`. */
     quantumInsights?: QuantumInsights | null;
+    /** Present when migration ran with `ai: true` (Groq advisory pass). */
+    aiMetrics?: AiPassMetrics | null;
+    /** Truncated Groq notes (advisory; not auto-applied). */
+    aiNotes?: string | null;
 }
 /**
  * Clone a public GitHub repo via the official zipball API, run the migrator, optionally delete temp files.

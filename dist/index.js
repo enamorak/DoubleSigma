@@ -5,6 +5,7 @@ export { collectMetrics } from "./runner/metrics.js";
 export { runMigrationJob, resolveTarget } from "./migrationJob.js";
 export { startWebServer } from "./web/server.js";
 export { migrateFromGithubHttpsUrl } from "./remote/migrateFromGithub.js";
+export { executeGithubBenchmark, } from "./api/executeGithubBenchmark.js";
 export { prepareGithubRepo } from "./remote/githubArchive.js";
 export { parseGithubRepoUrl } from "./remote/parseGithubUrl.js";
 export { buildDiffPreviews } from "./diffPreview.js";

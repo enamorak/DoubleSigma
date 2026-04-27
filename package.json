@@ -23,9 +23,10 @@
     "migrate": "tsx src/cli.ts",
     "ui": "tsx src/web/standalone.ts",
     "start": "node dist/web/standalone.js",
-    "test": "npm run build && node --test tests/integration/real-repos.test.mjs",
-    "test:network": "npm run build && node --test tests/integration/real-repos.test.mjs",
+    "test": "npm run build && node --test tests/integration/real-repos.test.mjs tests/unit/ethersproject-import.test.mjs",
+    "test:network": "npm run build && node --test tests/integration/real-repos.test.mjs tests/unit/ethersproject-import.test.mjs",
     "benchmark": "npm run build && node scripts/benchmark-repos.mjs",
+    "pre-submit": "npm run build && node --test tests/integration/real-repos.test.mjs tests/unit/ethersproject-import.test.mjs",
     "clean": "rimraf dist"
   },
   "keywords": [

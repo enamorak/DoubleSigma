@@ -16,6 +16,8 @@ function emptyPayload(log, cleanedUp) {
         appliedRulesSummary: [],
         rulesWithoutMatch: listRulesWithoutMatch([]),
         quantumInsights: null,
+        aiMetrics: null,
+        aiNotes: null,
     };
 }
 /**
@@ -67,6 +69,8 @@ export async function migrateFromGithubHttpsUrl(rawUrl, refOverride, cli, option
             appliedRulesSummary,
             rulesWithoutMatch,
             quantumInsights: hasError || !cli.quantum ? null : job.result.quantumInsights ?? null,
+            aiMetrics: hasError || !cli.ai ? null : job.result.aiMetrics ?? null,
+            aiNotes: hasError || !cli.ai ? null : job.result.aiNotes ?? null,
         };
     }
     finally {

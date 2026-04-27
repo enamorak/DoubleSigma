@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import path from "node:path";
+import { loadDotEnvFile } from "./env/loadDotEnv.js";
 import { buildDiffPreviews } from "./diffPreview.js";
+loadDotEnvFile();
 import { runMigrationJob } from "./migrationJob.js";
 import { migrateFromGithubHttpsUrl } from "./remote/migrateFromGithub.js";
 function parseArgs(argv) {

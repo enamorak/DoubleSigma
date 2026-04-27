@@ -5,6 +5,7 @@ import { runDryMigration } from "./runner/dry-run.js";
 import { collectMetrics } from "./runner/metrics.js";
 import { formatQuantumSummary, rankChangesByAmplitude } from "./quantum/pattern-detector.js";
 import { scanQuantumMarkers } from "./quantum/marker-scan.js";
+import { runAiEdgeReview } from "./ai-agent/edge-case-pass.js";
 function printPreviewDiff(before, after, maxLinePairs) {
     const beforeLines = before.split("\n");
     const afterLines = after.split("\n");
@@ -72,15 +73,21 @@ export async function runMigrationJob(options) {
         const quantumInsights = await scanQuantumMarkers(opts.targetPath);
         resultForLog = { ...resultForLog, quantumInsights };
     }
+    if (opts.ai) {
+        const { metrics: aiMetrics, notes } = await runAiEdgeReview(resultForLog.changes);
+        const aiNotes = notes.slice(0, 8000);
+        resultForLog = { ...resultForLog, aiMetrics, aiNotes };
+    }
     const metrics = collectMetrics(result);
     const lines = [];
     lines.push(`DoubleSigma mode: ${opts.mode}`);
     lines.push(`Target: ${opts.targetPath}`);
     lines.push(`Quantum heuristics: ${opts.quantum ? "enabled" : "disabled"}`);
-    lines.push(`AI fallback: ${opts.ai ? "enabled (not wired in v0.1 — reserved)" : "disabled"}`);
+    lines.push(`AI fallback (Groq): ${opts.ai ? "enabled" : "disabled"}`);
     lines.push("");
-    if (opts.ai) {
-        lines.push("Note: AI path requires OPENAI_API_KEY and will be added in a follow-up.");
+    if (opts.ai && resultForLog.aiMetrics) {
+        const m = resultForLog.aiMetrics;
+        lines.push(`AI metrics: time=${m.totalTimeMs}ms tokens=${m.tokensUsed} files=${m.filesProcessed} apiCalls=${m.apiCalls} cacheHits=${m.cacheHits}`);
         lines.push("");
     }
     lines.push(`Scanned files: ${metrics.scannedFiles}`);

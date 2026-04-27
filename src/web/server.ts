@@ -5,6 +5,7 @@ import { readFile } from "node:fs/promises";
 
 import express from "express";
 
+import { executeGithubBenchmark } from "../api/executeGithubBenchmark.js";
 import { payloadFromLocalJob } from "../api/localMigratePayload.js";
 import { getCodemodCatalog } from "../codemods/rulesCatalog.js";
 import { runMigrationJob } from "../migrationJob.js";
@@ -36,7 +37,18 @@ async function readBenchmarkPresets(): Promise<unknown> {
 }
 
 const app = express();
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "2mb" }));
+
+app.get("/presets.json", async (_req, res) => {
+  try {
+    const data = await readBenchmarkPresets();
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.json(data);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    res.status(404).json({ error: msg });
+  }
+});
 
 app.get("/", async (_req, res) => {
   const html = await readFile(path.join(publicDir, "index.html"), "utf8");
@@ -103,6 +115,39 @@ app.get("/api/presets", async (_req, res) => {
     const msg = e instanceof Error ? e.message : String(e);
     res.status(500).json({ error: msg });
   }
+});
+
+/**
+ * Dry-run a single public GitHub repo and return timing + rule hits (same engine as `npm run benchmark`).
+ * Body: `{ repoUrl: string, ref?: string, quantum?: boolean, ai?: boolean }`
+ */
+app.post("/api/benchmark", async (req, res) => {
+  const body = req.body as { repoUrl?: string; ref?: string; quantum?: boolean; ai?: boolean };
+  const repoUrl = typeof body.repoUrl === "string" ? body.repoUrl.trim() : "";
+  if (!repoUrl) {
+    res.status(400).json({
+      ok: false,
+      status: "failed",
+      repoName: "",
+      error: "Missing `repoUrl` (HTTPS github.com/owner/repo)",
+      filesScanned: 0,
+      filesChanged: 0,
+      rewrites: 0,
+      distinctRuleCount: 0,
+      rulesTriggered: [],
+      falsePositives: 0,
+      durationMs: 0,
+    });
+    return;
+  }
+
+  const result = await executeGithubBenchmark({
+    repoUrl,
+    ref: typeof body.ref === "string" ? body.ref : undefined,
+    quantum: body.quantum !== false,
+    ai: Boolean(body.ai),
+  });
+  res.status(200).json(result);
 });
 
 app.get("/api/health", (_req, res) => {
