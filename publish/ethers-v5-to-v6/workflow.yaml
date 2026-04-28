@@ -1,0 +1,8 @@
+version: "1"
+nodes:
+  - id: ethers_v5_to_v6
+    name: Apply ethers v5->v6 codemod
+    type: automatic
+    steps:
+      - name: Package metadata step
+        run: echo "DoubleSigma ethers v5->v6 codemod package"

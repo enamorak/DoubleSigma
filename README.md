@@ -3,6 +3,30 @@
 [![Hackathon](https://img.shields.io/badge/Codemod-Hackathon-blue)](https://codemod.com)
 [![ethers](https://img.shields.io/badge/ethers-v5--to--v6-orange)](https://docs.ethers.org/v6/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6)](https://www.typescriptlang.org/)
+[![Codemod Registry](https://img.shields.io/badge/Codemod%20Registry-@enamorak%2Fdoublesigma--ethers--v5--to--v6-6f42c1)](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6)
+
+> 👉 **View on Codemod Registry:** [@enamorak/doublesigma-ethers-v5-to-v6](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6)
+
+## Registry + Benchmarks + Accuracy
+
+- **Published registry package:** [@enamorak/doublesigma-ethers-v5-to-v6](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6)
+- **Latest benchmark source:** [`docs/benchmark-latest.json`](docs/benchmark-latest.json)
+- **Current suite result:** **8/8 successful**, **84 rewrites**, **84 changed files**, ~**33.6s** cumulative runtime
+
+| Repository | Result | Rewrites | Impact | Time |
+|---|---:|---:|---:|---:|
+| [flashbots/ethers-provider-flashbots-bundle](https://github.com/flashbots/ethers-provider-flashbots-bundle) | ✅ | 3 | 100.0% (3/3) | 0.823s |
+| [Uniswap/v3-sdk](https://github.com/Uniswap/v3-sdk) | ✅ | 8 | 12.7% (8/63) | 0.585s |
+| [ProjectOpenSea/opensea-js](https://github.com/ProjectOpenSea/opensea-js) | ✅ | 5 | 4.4% (5/113) | 1.141s |
+| [wagmi-dev/wagmi](https://github.com/wagmi-dev/wagmi) | ✅ | 0 | 0.0% (0/1069) | 3.039s |
+| [rainbow-me/rainbowkit](https://github.com/rainbow-me/rainbowkit) | ✅ | 24 | 3.6% (24/670) | 4.253s |
+| [aave/aave-v3-core](https://github.com/aave/aave-v3-core) | ✅ | 15 | 18.5% (15/81) | 2.923s |
+| [NomicFoundation/hardhat](https://github.com/NomicFoundation/hardhat) | ✅ | 29 | 1.8% (29/1580) | 19.962s |
+| [traderjoe-xyz/joe-v2](https://github.com/traderjoe-xyz/joe-v2) | ✅ | 0 | — (0 scanned) | 0.879s |
+
+- **Accuracy posture:** deterministic rule engine, rule-level confidence tags (`high` / `medium` / `low`), and **0 false positives reported** in benchmark runs.
+- **Quantum features:** `quantumInsights` reports latent markers (`latentBigNumberMarkers`, `latentNestedProviderMarkers`, `latentDeployedCalls`, `latentEthersProjectImports`) plus `superpositionCoverage`.
+- **AI features:** optional Groq advisory reviews changed files and returns notes/metrics (`tokensUsed`, `filesProcessed`, `apiCalls`) without auto-applying edits.
 
 DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patterns, with:
 
@@ -10,6 +34,8 @@ DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patt
 - **GitHub URL import** via the official zipball API (no local `git` required).
 - A **catalog of every codemod** (titles, descriptions, v5/v6 hints) exposed at `GET /api/rules`.
 - After each run, the API returns **`appliedRulesSummary`** (what actually rewrote your code) and **`rulesWithoutMatch`** (catalog entries that did not hit).
+
+Published package on Codemod Registry: [@enamorak/doublesigma-ethers-v5-to-v6](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6).
 
 ---
 
@@ -66,6 +92,8 @@ The canonical list lives in [`data/benchmark-repositories.json`](data/benchmark-
 
 **Note:** Some repos are **viem-first** (e.g. wagmi v2), **JSBI-first** (e.g. Uniswap v3-sdk numerics), or Solidity-heavy — **0 rewrites** can be honest. The catalog now rewrites common **`@ethersproject/abi`** and **`@ethersproject/providers`** imports toward **`ethers`** (see rule confidence in the UI). Always **review diffs** before applying.
 
+See the top section **Registry + Benchmarks + Accuracy** for the latest measured run, precision notes, and quantum/AI capabilities.
+
 ---
 
 ## Quick start (CLI)
@@ -93,6 +121,33 @@ Keep the temp clone after a dry-run:
 ```bash
 npm run migrate -- migrate --url https://github.com/owner/repo --keep-temp --quantum
 ```
+
+## Run locally (developer guide)
+
+1. **Install + build**
+   ```bash
+   npm install
+   npm run build
+   ```
+2. **Start web UI**
+   ```bash
+   npm run ui
+   ```
+   Open `http://127.0.0.1:3847`, then use **Migrate** or **Benchmarks** tabs.
+3. **Run benchmark suite**
+   ```bash
+   npm run benchmark
+   ```
+   This refreshes `docs/benchmark-latest.json`.
+4. **Run tests / pre-submit gate**
+   ```bash
+   npm test
+   npm run pre-submit
+   ```
+5. **Optional AI advisory**
+   - Copy `.env.example` → `.env`
+   - Set `GROQ_API_KEY`
+   - Re-run UI/CLI with AI enabled
 
 ---
 

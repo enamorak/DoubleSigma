@@ -1,0 +1,12 @@
+{
+  "name": "@enamorak/doublesigma-ethers-v5-to-v6",
+  "version": "1.0.0",
+  "description": "DoubleSigma — First deterministic codemod for ethers.js v5 → v6 migration. 0 false positives, quantum insights, Groq AI advisory.",
+  "author": "enamorak",
+  "license": "MIT",
+  "repository": "https://github.com/enamorak/DoubleSigma",
+  "tags": ["ethers", "web3", "migration", "bigint", "quantum", "codemod"],
+  "engines": {
+    "codemod": ">=1.0.0"
+  }
+}

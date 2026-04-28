@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T23:31:47.533Z",
+  "generatedAt": "2026-04-27T23:38:11.126Z",
   "rows": [
     {
       "id": "flashbots-ethers-provider",
@@ -22,7 +22,7 @@
       "changedFiles": 3,
       "rewrites": 3,
       "distinctRules": 1,
-      "durationMs": 873,
+      "durationMs": 823,
       "quantumInsights": {
         "superpositionCoverage": 0.038,
         "latentBigNumberMarkers": 69,
@@ -54,7 +54,7 @@
       "changedFiles": 8,
       "rewrites": 8,
       "distinctRules": 1,
-      "durationMs": 384,
+      "durationMs": 585,
       "quantumInsights": {
         "superpositionCoverage": 0.6,
         "latentBigNumberMarkers": 30,
@@ -85,7 +85,7 @@
       "changedFiles": 5,
       "rewrites": 5,
       "distinctRules": 1,
-      "durationMs": 620,
+      "durationMs": 1141,
       "quantumInsights": {
         "superpositionCoverage": 0.991,
         "latentBigNumberMarkers": 1,
@@ -116,7 +116,7 @@
       "changedFiles": 0,
       "rewrites": 0,
       "distinctRules": 0,
-      "durationMs": 2850,
+      "durationMs": 3039,
       "quantumInsights": {
         "superpositionCoverage": 0.975,
         "latentBigNumberMarkers": 27,
@@ -147,7 +147,7 @@
       "changedFiles": 24,
       "rewrites": 24,
       "distinctRules": 1,
-      "durationMs": 3992,
+      "durationMs": 4253,
       "quantumInsights": {
         "superpositionCoverage": 0.927,
         "latentBigNumberMarkers": 53,
@@ -178,7 +178,7 @@
       "changedFiles": 15,
       "rewrites": 15,
       "distinctRules": 2,
-      "durationMs": 1283,
+      "durationMs": 2923,
       "quantumInsights": {
         "superpositionCoverage": 0.036,
         "latentBigNumberMarkers": 2104,
@@ -209,7 +209,7 @@
       "changedFiles": 29,
       "rewrites": 29,
       "distinctRules": 2,
-      "durationMs": 4358,
+      "durationMs": 19962,
       "quantumInsights": {
         "superpositionCoverage": 0.921,
         "latentBigNumberMarkers": 132,
@@ -240,7 +240,7 @@
       "changedFiles": 0,
       "rewrites": 0,
       "distinctRules": 0,
-      "durationMs": 685,
+      "durationMs": 879,
       "quantumInsights": {
         "superpositionCoverage": 1,
         "latentBigNumberMarkers": 0,
