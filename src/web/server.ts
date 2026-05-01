@@ -162,7 +162,11 @@ export function startWebServer(port = Number(process.env.PORT) || 3847): Server 
   server.listen(port, () => {
     const addr = server.address();
     const actualPort = typeof addr === "object" && addr ? addr.port : port;
-    console.log(`DoubleSigma UI: http://127.0.0.1:${actualPort}/`);
+    if (process.env.NODE_ENV === "production") {
+      console.log(`DoubleSigma UI listening on port ${actualPort}`);
+    } else {
+      console.log(`DoubleSigma UI: http://127.0.0.1:${actualPort}/`);
+    }
   });
   return server;
 }
