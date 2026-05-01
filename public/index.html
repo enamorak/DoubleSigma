@@ -344,6 +344,48 @@
         gap: 0.5rem;
         margin-top: 0.75rem;
       }
+      .hero-resources {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 0.85rem;
+        margin-top: 0.8rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.76rem;
+      }
+      .hero-resources-label {
+        color: var(--muted);
+        font-weight: 600;
+        margin-right: 0.15rem;
+      }
+      .hero-resources a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.2s ease, opacity 0.2s ease;
+        opacity: 0.92;
+      }
+      .hero-resources a:hover {
+        color: #93c5fd;
+        text-decoration: underline;
+        opacity: 1;
+      }
+      .footer-resources {
+        margin: 0.65rem 0 0;
+        padding: 0.65rem 0 0;
+        border-top: 1px solid var(--border);
+        line-height: 1.65;
+      }
+      .footer-resources a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .footer-resources a:hover {
+        text-decoration: underline;
+      }
       .hero-btn {
         border: none;
         border-radius: 10px;
@@ -1175,6 +1217,13 @@
               >GitHub</a
             >
           </div>
+          <div class="hero-resources" aria-label="Pitch deck, demo, and social">
+            <span class="hero-resources-label">Also:</span>
+            <a href="https://youtu.be/RIiDbEIrk70" target="_blank" rel="noopener noreferrer">Demo video</a>
+            <a href="https://disk.yandex.ru/i/br4UM0vIpTOXSA" target="_blank" rel="noopener noreferrer">Presentation (PDF)</a>
+            <a href="https://x.com/arkhangels25781/status/2050342260684779736?s=20" target="_blank" rel="noopener noreferrer">X (post)</a>
+            <a href="https://t.me/cyberpunk_production/1180" target="_blank" rel="noopener noreferrer">Telegram</a>
+          </div>
         </div>
         <div class="hero-card hero-card--accent">
           <div class="hero-eyebrow" style="color: rgba(255, 255, 255, 0.55)">Measured on curated repos</div>
@@ -1525,6 +1574,16 @@
         </p>
         <p style="margin: 0">
           <strong>Security:</strong> never commit API keys. Copy <code>.env.example</code> → <code>.env</code> and set <code>GROQ_API_KEY</code> locally.
+        </p>
+        <p class="footer-resources">
+          <strong>Materials:</strong>
+          <a href="https://youtu.be/RIiDbEIrk70" target="_blank" rel="noopener noreferrer">Demo video (YouTube)</a>
+          ·
+          <a href="https://disk.yandex.ru/i/br4UM0vIpTOXSA" target="_blank" rel="noopener noreferrer">Presentation PDF (Yandex Disk)</a>
+          ·
+          <a href="https://x.com/arkhangels25781/status/2050342260684779736?s=20" target="_blank" rel="noopener noreferrer">Solution thread (X)</a>
+          ·
+          <a href="https://t.me/cyberpunk_production/1180" target="_blank" rel="noopener noreferrer">Telegram (Cyberpunk Production)</a>
         </p>
       </footer>
     </div>
