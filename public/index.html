@@ -352,6 +352,76 @@
         border-color: var(--success) !important;
         box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.28);
       }
+      .quick-pick {
+        margin-top: 0.85rem;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+        padding: 0.7rem 0.75rem;
+        background: rgba(79, 140, 255, 0.06);
+      }
+      .quick-pick h4 {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--text);
+      }
+      .chip-row {
+        margin-top: 0.55rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+      .repo-chip {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 0.28rem 0.62rem;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+      }
+      .repo-chip:hover {
+        transform: scale(1.05);
+        border-color: var(--accent);
+        box-shadow: 0 6px 14px rgba(8, 12, 28, 0.26);
+      }
+      .repo-chip.active {
+        border-color: var(--success);
+        box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.45);
+        color: var(--success);
+      }
+      .migrate-progress {
+        margin-top: 0.75rem;
+      }
+      .migrate-progress.hidden {
+        display: none;
+      }
+      .migrate-progress .track {
+        height: 8px;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .migrate-progress .fill {
+        height: 100%;
+        width: 35%;
+        background: linear-gradient(90deg, #ec4899, #7c6cf0);
+        animation: migrateBar 1.2s ease-in-out infinite;
+      }
+      @keyframes migrateBar {
+        0% { transform: translateX(-120%); }
+        100% { transform: translateX(320%); }
+      }
+      .result-card {
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.28s ease, transform 0.28s ease;
+      }
+      .result-card.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
       .panel.hidden {
         display: none;
       }
@@ -786,7 +856,7 @@
         </div>
       </section>
 
-      <div class="steps">
+      <div class="steps" id="onboardingSteps">
         <div class="step">
           <div class="step-num">1</div>
           <h3>Open this page correctly</h3>
@@ -810,7 +880,7 @@
         </div>
       </div>
 
-      <section>
+      <section id="presetSection">
         <h2>Preset repositories</h2>
         <p class="hint" style="margin-top: -0.25rem; margin-bottom: 0.75rem">
           Same list as <code>data/benchmark-repositories.json</code> / <code>public/presets.json</code> (see README → Benchmark).
@@ -821,12 +891,12 @@
         </div>
       </section>
 
-      <section>
-        <h2>Rule catalog</h2>
-        <p class="hint" style="margin-top: -0.25rem">
-          Loaded from <code>GET /api/rules</code>. After a run, rows for rules that rewrote code are highlighted.
-        </p>
-        <div class="card">
+      <section id="ruleCatalogSection">
+        <details class="card">
+          <summary style="cursor:pointer;font-weight:700">📋 Migration rules (catalog) — expand</summary>
+          <p class="hint" style="margin-top:0.55rem">
+            Preview examples: <code>Web3Provider → BrowserProvider</code>, <code>AddressZero → ZeroAddress</code>, <code>formatBytes32String → encodeBytes32String</code>.
+          </p>
           <div id="catalogLoading" class="empty-presets">Loading catalog…</div>
           <div class="catalog-wrap hidden" id="catalogWrap">
             <table class="catalog" id="catalogTable">
@@ -842,7 +912,7 @@
               <tbody id="catalogBody"></tbody>
             </table>
           </div>
-        </div>
+        </details>
       </section>
 
       <section id="runMigrationSection">
@@ -870,6 +940,10 @@
             <p class="hint">
               <strong>Apply</strong> writes into the unpacked folder — response includes <code>workDir</code>. Demos usually use dry-run.
             </p>
+            <div class="quick-pick">
+              <h4>📦 Quick start presets — click to auto-fill URL</h4>
+              <div id="quickRepoChips" class="chip-row"></div>
+            </div>
           </div>
 
           <div class="row">
@@ -881,15 +955,19 @@
             <label><input type="checkbox" id="ai" /> AI advisory (Groq — needs <code>GROQ_API_KEY</code> in <code>.env</code>)</label>
           </div>
           <div class="actions">
-            <button type="button" class="btn-primary" id="run">Run</button>
+            <button type="button" class="btn-primary" id="run">▶ RUN MIGRATION</button>
             <button type="button" class="btn-secondary" id="health">API health</button>
+          </div>
+          <div id="migrateProgressWrap" class="migrate-progress hidden">
+            <div class="hint" id="migrateProgressLabel">Analyzing code...</div>
+            <div class="track"><div class="fill"></div></div>
           </div>
         </div>
       </section>
 
-      <section>
+      <section id="resultSection">
         <h2>Result</h2>
-        <div class="card">
+        <div class="card result-card" id="resultCard">
           <div id="status" class="status"></div>
           <div id="appliedBlock" class="hidden">
             <p style="margin: 0 0 0.35rem; font-weight: 600">Rules that rewrote code (recommended for this repo)</p>
@@ -1453,6 +1531,41 @@
         }
       }
 
+      function setActiveChip(url) {
+        for (const ch of document.querySelectorAll(".repo-chip")) {
+          const is = ch.textContent && url.includes(ch.textContent);
+          ch.classList.toggle("active", Boolean(is));
+        }
+      }
+
+      async function animateUrlTyping(fullUrl) {
+        const f = document.getElementById("url");
+        if (!f) return;
+        f.classList.add("url-flash");
+        f.value = "";
+        const maxLen = fullUrl.length;
+        for (let i = 1; i <= maxLen; i += 3) {
+          f.value = fullUrl.slice(0, i);
+          await new Promise((r) => setTimeout(r, 8));
+        }
+        f.value = fullUrl;
+        setTimeout(() => f.classList.remove("url-flash"), 900);
+      }
+
+      function prioritizeRunFlow() {
+        const root = document.getElementById("pageMigrate");
+        const runSec = document.getElementById("runMigrationSection");
+        const intro = root ? root.querySelector("section.card") : null;
+        if (root && runSec) {
+          if (intro && intro.nextSibling) root.insertBefore(runSec, intro.nextSibling);
+          else root.insertBefore(runSec, root.firstChild);
+        }
+        const preset = document.getElementById("presetSection");
+        if (preset) preset.classList.add("hidden");
+        const tg = document.getElementById("tabGithub");
+        if (tg) tg.click();
+      }
+
       function loadBenchCacheFromStorage() {
         try {
           const raw = localStorage.getItem(BENCH_CACHE_KEY);
@@ -1719,6 +1832,7 @@
       async function loadPresets() {
         const grid = document.getElementById("presetGrid");
         const loading = document.getElementById("presetLoading");
+        const chips = document.getElementById("quickRepoChips");
         try {
           const data = await fetchJsonFromUrls(["/api/presets", "/presets.json"], "Presets");
           const list = Array.isArray(data) ? data : [];
@@ -1728,6 +1842,7 @@
           loading.classList.add("hidden");
           grid.classList.remove("hidden");
           grid.innerHTML = "";
+          if (chips) chips.innerHTML = "";
           for (const p of list) {
             const btn = document.createElement("button");
             btn.type = "button";
@@ -1750,6 +1865,21 @@
               document.getElementById("url").focus();
             });
             grid.appendChild(btn);
+            if (chips) {
+              const c = document.createElement("button");
+              c.type = "button";
+              c.className = "repo-chip";
+              c.textContent = p.owner + "/" + p.repo;
+              c.addEventListener("click", async () => {
+                document.getElementById("tabGithub").click();
+                const targetUrl = "https://github.com/" + p.owner + "/" + p.repo;
+                await animateUrlTyping(targetUrl);
+                document.getElementById("ref").value = p.ref || "";
+                setActiveChip(targetUrl);
+                document.getElementById("url").focus();
+              });
+              chips.appendChild(c);
+            }
           }
           benchmarkRepoList = list;
           loadBenchCacheFromStorage();
@@ -1801,6 +1931,7 @@
         panelGithub.classList.remove("hidden");
         panelLocal.classList.add("hidden");
       });
+      urlEl.addEventListener("input", () => setActiveChip(urlEl.value));
 
       function highlightRules(ids) {
         for (const tr of document.querySelectorAll("#catalogBody tr")) {
@@ -1932,9 +2063,14 @@
       loadCatalog().catch((e) => {
         document.getElementById("catalogLoading").textContent = "Catalog error: " + e;
       });
+      prioritizeRunFlow();
       loadPresets();
 
       run.addEventListener("click", async () => {
+        const resultCard = document.getElementById("resultCard");
+        const migrateWrap = document.getElementById("migrateProgressWrap");
+        const migrateLabel = document.getElementById("migrateProgressLabel");
+        const runDefaultText = run.textContent;
         status.textContent = "Running…";
         status.className = "status";
         out.textContent = "";
@@ -1943,7 +2079,12 @@
         appliedBlock.classList.add("hidden");
         noMatchBlock.classList.add("hidden");
         highlightRules([]);
+        if (resultCard) resultCard.classList.remove("revealed");
         run.disabled = true;
+        run.classList.add("pulse");
+        run.textContent = "🔄 Analyzing code...";
+        if (migrateWrap) migrateWrap.classList.remove("hidden");
+        if (migrateLabel) migrateLabel.textContent = "Analyzing code...";
         try {
           const body =
             source === "github"
@@ -2009,11 +2150,15 @@
             document.getElementById("aiNotesBlock").classList.remove("hidden");
           }
           renderDiffs(data.diffs);
+          if (resultCard) requestAnimationFrame(() => resultCard.classList.add("revealed"));
         } catch (e) {
           status.className = "status err";
           status.textContent = String(e);
         } finally {
           run.disabled = false;
+          run.classList.remove("pulse");
+          run.textContent = runDefaultText || "Run";
+          if (migrateWrap) migrateWrap.classList.add("hidden");
         }
       });
 
