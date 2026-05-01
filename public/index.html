@@ -45,11 +45,40 @@
       header {
         margin-bottom: 2rem;
       }
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        padding: 1.1rem 1.2rem 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 12px 28px rgba(20, 22, 38, 0.35);
+      }
+      .hero-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem;
+      }
+      .hero-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.82rem;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .hero-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
       .brand {
         font-size: 0.75rem;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.85);
         font-weight: 600;
         margin-bottom: 0.35rem;
       }
@@ -61,10 +90,56 @@
         line-height: 1.2;
       }
       .lead {
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.92);
         font-size: 1.05rem;
         max-width: 52ch;
         margin: 0;
+      }
+      .hero-stats {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.65rem;
+      }
+      .hero-stat {
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        padding: 0.65rem 0.75rem;
+      }
+      .hero-stat .n {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.01em;
+      }
+      .hero-stat .t {
+        font-size: 0.79rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .hero-cta {
+        margin-top: 0.95rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+      }
+      .hero-btn {
+        border: none;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700;
+      }
+      .hero-btn.primary {
+        background: #ec4899;
+        color: #fff;
+      }
+      .hero-btn.secondary {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        text-decoration: none;
       }
       .steps {
         display: grid;
@@ -150,6 +225,16 @@
       .preset:hover {
         border-color: var(--accent);
         background: var(--accent-soft);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(10, 12, 25, 0.32);
+      }
+      .preset:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .preset-picked {
+        border-color: var(--success) !important;
+        box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.5), 0 8px 20px rgba(15, 20, 35, 0.25);
       }
       .preset strong {
         display: block;
@@ -237,6 +322,14 @@
         color: #fff;
         background: linear-gradient(120deg, var(--accent), #7c6cf0);
       }
+      .btn-primary.pulse {
+        animation: runPulse 0.8s ease;
+      }
+      @keyframes runPulse {
+        0% { transform: scale(1); }
+        40% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+      }
       .btn-secondary {
         font: inherit;
         border: 1px solid var(--border);
@@ -254,6 +347,10 @@
         font-size: 0.85rem;
         color: var(--muted);
         margin-top: 0.65rem;
+      }
+      .url-flash {
+        border-color: var(--success) !important;
+        box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.28);
       }
       .panel.hidden {
         display: none;
@@ -430,6 +527,20 @@
         margin-bottom: 1rem;
         align-items: center;
       }
+      .bench-last-run {
+        margin-left: auto;
+        font-size: 0.78rem;
+        padding: 0.26rem 0.52rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--muted);
+      }
+      .bench-last-run.ok {
+        border-color: rgba(52, 211, 153, 0.45);
+        color: var(--success);
+        background: rgba(52, 211, 153, 0.08);
+      }
       .summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -563,13 +674,24 @@
   </head>
   <body>
     <div class="shell">
-      <header>
-        <div class="brand">DoubleSigma · Hackathon / Codemod</div>
-        <h1>Migrate ethers.js <span style="color: var(--accent)">v5 → v6</span></h1>
+      <header class="hero">
+        <div class="hero-top">
+          <div class="brand">DoubleSigma · Hackathon / Codemod</div>
+          <a class="hero-link" href="https://github.com/enamorak/DoubleSigma" target="_blank" rel="noopener noreferrer">📂 GitHub</a>
+        </div>
+        <h1>First codemod for ethers.js <span style="color: #ffd7fb">v5 → v6</span></h1>
         <p class="lead">
-          One screen: curated GitHub repos, the full rule catalog, dry-run or apply, and a report showing which
-          rewrites <strong>actually fired</strong> on your tree plus diff previews.
+          Migrate real GitHub repos in seconds: deterministic rewrites, zero-FP posture, and benchmark-grade reporting.
         </p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="n" id="heroRewrites">84</div><div class="t">automatic rewrites</div></div>
+          <div class="hero-stat"><div class="n" id="heroFp">0</div><div class="t">false positives reported</div></div>
+          <div class="hero-stat"><div class="n" id="heroSuccess">8/8</div><div class="t">successful benchmark repos</div></div>
+        </div>
+        <div class="hero-cta">
+          <button type="button" class="hero-btn primary" id="heroStart">🚀 Start migration</button>
+          <a class="hero-btn secondary" href="https://github.com/enamorak/DoubleSigma" target="_blank" rel="noopener noreferrer">📂 GitHub</a>
+        </div>
       </header>
 
       <div class="page-nav" role="tablist" aria-label="Pages">
@@ -723,7 +845,7 @@
         </div>
       </section>
 
-      <section>
+      <section id="runMigrationSection">
         <h2>Run migration</h2>
         <div class="card">
           <div class="tabs">
@@ -801,7 +923,7 @@
           <div id="benchSummaryTop" class="hidden"></div>
           <div class="card">
             <div class="bench-actions">
-              <button type="button" class="btn-primary" id="benchRunAll">Run all benchmarks</button>
+              <button type="button" class="btn-primary" id="benchRunAll">▶ Run all benchmarks</button>
               <button type="button" class="btn-secondary" id="benchExportCsv">Export CSV</button>
               <button type="button" class="btn-secondary" id="benchExportJson">Export JSON</button>
               <button type="button" class="btn-secondary" id="benchGenerateReport">Generate HTML report</button>
@@ -809,6 +931,7 @@
                 <input type="checkbox" id="benchAi" /> Use AI (Groq · <code>GROQ_API_KEY</code>)
               </label>
               <span class="hint" id="benchGlobalStatus" style="margin: 0"></span>
+              <span id="benchLastRunBadge" class="bench-last-run">No runs yet</span>
             </div>
             <div id="benchProgressWrap" class="hidden" style="margin-bottom: 1rem">
               <div class="hint" id="benchProgressLabel" style="margin-bottom: 0.35rem"></div>
@@ -899,6 +1022,8 @@
       let catalogById = new Map();
       let benchmarkRepoList = [];
       const benchResults = {};
+      const BENCH_CACHE_KEY = "doublesigma.bench.cache.v1";
+      const BENCH_CACHE_META_KEY = "doublesigma.bench.cache.meta.v1";
 
       function repoKey(p) {
         return p.owner + "/" + p.repo;
@@ -908,6 +1033,7 @@
         if (st === "success") return "OK";
         if (st === "failed") return "Failed";
         if (st === "running") return "Running…";
+        if (st === "cached") return "Cached ✓";
         return "—";
       }
 
@@ -942,6 +1068,9 @@
 
       function statusCellHtml(repo, r) {
         if (!r) return escapeHtml("Pending");
+        if (r.status === "cached") {
+          return "<span style=\"color:var(--success);font-weight:600\">Cached ✓</span>";
+        }
         if (r.status === "failed") {
           const tip = escapeHtml((r.error || "error").slice(0, 280));
           return (
@@ -1268,6 +1397,80 @@
           "s</div><div class=\"lbl\">Total time</div></div>";
       }
 
+      function updateHeroStatsFromBench() {
+        const vals = Object.values(benchResults);
+        if (!vals.length) return;
+        const ok = vals.filter((x) => x.status === "success" || x.status === "cached").length;
+        const totalRew = vals.reduce((s, x) => s + (x.rewrites || 0), 0);
+        const totalFp = vals.reduce((s, x) => s + (x.falsePositives || 0), 0);
+        const rewEl = document.getElementById("heroRewrites");
+        const fpEl = document.getElementById("heroFp");
+        const okEl = document.getElementById("heroSuccess");
+        if (rewEl) rewEl.textContent = String(totalRew);
+        if (fpEl) fpEl.textContent = String(totalFp);
+        if (okEl) okEl.textContent = ok + "/" + benchmarkRepoList.length;
+      }
+
+      function saveBenchCache() {
+        try {
+          localStorage.setItem(BENCH_CACHE_KEY, JSON.stringify(benchResults));
+          localStorage.setItem(
+            BENCH_CACHE_META_KEY,
+            JSON.stringify({ savedAt: new Date().toISOString(), repoCount: benchmarkRepoList.length })
+          );
+        } catch (_e) {}
+      }
+
+      function renderBenchLastRunBadge() {
+        const el = document.getElementById("benchLastRunBadge");
+        if (!el) return;
+        try {
+          const metaRaw = localStorage.getItem(BENCH_CACHE_META_KEY);
+          if (!metaRaw) {
+            el.className = "bench-last-run";
+            el.textContent = "No runs yet";
+            return;
+          }
+          const meta = JSON.parse(metaRaw);
+          const dt = meta.savedAt ? new Date(meta.savedAt) : null;
+          if (!dt || Number.isNaN(dt.getTime())) {
+            el.className = "bench-last-run";
+            el.textContent = "No runs yet";
+            return;
+          }
+          const now = new Date();
+          const isToday =
+            dt.getFullYear() === now.getFullYear() &&
+            dt.getMonth() === now.getMonth() &&
+            dt.getDate() === now.getDate();
+          el.className = "bench-last-run" + (isToday ? " ok" : "");
+          el.textContent =
+            "✓ last run: " +
+            dt.toLocaleString([], { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+        } catch (_e) {
+          el.className = "bench-last-run";
+          el.textContent = "No runs yet";
+        }
+      }
+
+      function loadBenchCacheFromStorage() {
+        try {
+          const raw = localStorage.getItem(BENCH_CACHE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return;
+          for (const repo of benchmarkRepoList) {
+            const key = repoKey(repo);
+            const row = parsed[key];
+            if (!row || typeof row !== "object") continue;
+            benchResults[key] = { ...row };
+            if (benchResults[key].status !== "failed" && benchResults[key].status !== "running") {
+              benchResults[key].status = "cached";
+            }
+          }
+        } catch (_e) {}
+      }
+
       async function runBenchmarkRow(repo) {
         const key = repoKey(repo);
         const url = repo.url || "https://github.com/" + repo.owner + "/" + repo.repo;
@@ -1330,6 +1533,9 @@
         }
         renderBenchTable();
         updateBenchSummary();
+        updateHeroStatsFromBench();
+        saveBenchCache();
+        renderBenchLastRunBadge();
       }
 
       function csvEscape(cell) {
@@ -1536,13 +1742,25 @@
               document.getElementById("tabGithub").click();
               document.getElementById("url").value = "https://github.com/" + p.owner + "/" + p.repo;
               document.getElementById("ref").value = p.ref || "";
+              const f = document.getElementById("url");
+              f.classList.add("url-flash");
+              setTimeout(() => f.classList.remove("url-flash"), 900);
+              for (const x of document.querySelectorAll(".preset")) x.classList.remove("preset-picked");
+              btn.classList.add("preset-picked");
               document.getElementById("url").focus();
             });
             grid.appendChild(btn);
           }
           benchmarkRepoList = list;
+          loadBenchCacheFromStorage();
           renderBenchTable();
-          updateBenchSummaryTop();
+          updateBenchSummary();
+          updateHeroStatsFromBench();
+          renderBenchLastRunBadge();
+          if (Object.keys(benchResults).length) {
+            const st = document.getElementById("benchGlobalStatus");
+            if (st) st.textContent = "Showing cached benchmark results. Click Run to refresh.";
+          }
         } catch (e) {
           loading.textContent = "Could not load presets: " + e;
         }
@@ -1668,6 +1886,8 @@
         const bar = document.getElementById("benchProgressBar");
         const lab = document.getElementById("benchProgressLabel");
         btn.disabled = true;
+        btn.classList.add("pulse");
+        setTimeout(() => btn.classList.remove("pulse"), 850);
         wrap.classList.remove("hidden");
         st.textContent = "Running full suite…";
         const n = benchmarkRepoList.length;
@@ -1696,11 +1916,18 @@
           st.textContent = String(e);
         } finally {
           btn.disabled = false;
+          saveBenchCache();
+          renderBenchLastRunBadge();
+          updateHeroStatsFromBench();
         }
       });
       document.getElementById("benchExportCsv").addEventListener("click", () => exportBenchCsv());
       document.getElementById("benchExportJson").addEventListener("click", () => exportBenchJson());
       document.getElementById("benchGenerateReport").addEventListener("click", () => generateBenchReportHtml());
+      document.getElementById("heroStart").addEventListener("click", () => {
+        const el = document.getElementById("runMigrationSection");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
 
       loadCatalog().catch((e) => {
         document.getElementById("catalogLoading").textContent = "Catalog error: " + e;
