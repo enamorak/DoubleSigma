@@ -131,8 +131,12 @@ app.get("/api/health", (_req, res) => {
 /** Static assets (e.g. /presets.json) after API routes so JSON handlers win. */
 app.use(express.static(publicDir, { index: false }));
 export function startWebServer(port = Number(process.env.PORT) || 3847) {
-    return createServer(app).listen(port, () => {
-        console.log(`DoubleSigma UI: http://127.0.0.1:${port}/`);
+    const server = createServer(app);
+    server.listen(port, () => {
+        const addr = server.address();
+        const actualPort = typeof addr === "object" && addr ? addr.port : port;
+        console.log(`DoubleSigma UI: http://127.0.0.1:${actualPort}/`);
     });
+    return server;
 }
 export { app as webApp, publicDir };

@@ -149,6 +149,24 @@ npm run migrate -- migrate --url https://github.com/owner/repo --keep-temp --qua
    - Set `GROQ_API_KEY`
    - Re-run UI/CLI with AI enabled
 
+## Deploy (Render)
+
+`DoubleSigma` is production-ready for Node hosting with `PORT` support and `npm run start`.
+
+1. Push this repository to GitHub.
+2. In Render, create a new **Web Service** from the repo.
+3. Use these settings:
+   - **Build Command:** `npm install && npm run build`
+   - **Start Command:** `npm run start`
+   - **Runtime:** Node
+4. Add environment variables in Render dashboard:
+   - `NODE_ENV=production`
+   - `GROQ_API_KEY=<optional>`
+   - `PORT` is provided by Render automatically (fallback is `3847` locally)
+5. Deploy. Render will provide a public URL for judges.
+
+Infrastructure config is included in [`render.yaml`](render.yaml).
+
 ---
 
 ## HTTP API
@@ -193,6 +211,8 @@ Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.t
 - `.sendTransaction(` → `.broadcastTransaction(` (provider-style calls — review for false positives)
 - `ethers.constants.AddressZero` / `HashZero` → `ethers.ZeroAddress` / `ethers.ZeroHash`
 - Common `ethers.utils.*` → root helpers (`dataSlice`, `zeroPadValue`, `toQuantity`, `getBytes`, bytes32 helpers, …)
+- BigNumber arithmetic/comparisons (reviewed, medium confidence): `.add()`, `.sub()`, `.mul()`, `.div()`, `.eq()`, `.gt()`, `.lt()`, `.gte()`, `.lte()`
+- `ethers.BigNumber.from(identifier)` → `BigInt(identifier)` (medium confidence)
 
 See the web catalog or `GET /api/rules` for the full list with descriptions.
 

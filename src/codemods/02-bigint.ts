@@ -1,6 +1,51 @@
 import type { CodemodRule } from "./codemod-types.js";
 
 const DOCS = "https://docs.ethers.org/v6/migrating/";
+const IDENT = "[A-Za-z_$][\\w$]*";
+const ARG = "([^()]+)";
+
+function makeBigNumberBinaryRule(
+  id: string,
+  title: string,
+  method: string,
+  operator: string
+): CodemodRule[] {
+  return [
+    {
+      id: `${id}:from-chain`,
+      title: `${title} (BigNumber.from(...).${method}(BigNumber.from(...)))`,
+      description:
+        "Converts direct BigNumber.from(...) method chains to bigint operators. Limited to explicit ethers.BigNumber.from(...) on both sides.",
+      v5Pattern: `ethers.BigNumber.from(a).${method}(ethers.BigNumber.from(b))`,
+      v6Replacement: `(BigInt(a) ${operator} BigInt(b))`,
+      docsUrl: DOCS,
+      confidence: "medium",
+      apply: (source) =>
+        source.replace(
+          new RegExp(
+            `ethers\\.BigNumber\\.from\\(\\s*${ARG}\\s*\\)\\.${method}\\(\\s*ethers\\.BigNumber\\.from\\(\\s*${ARG}\\s*\\)\\s*\\)`,
+            "g"
+          ),
+          (_m, left: string, right: string) => `(BigInt(${left.trim()}) ${operator} BigInt(${right.trim()}))`
+        ),
+    },
+    {
+      id: `${id}:identifier-chain`,
+      title: `${title} (identifier.${method}(identifier))`,
+      description:
+        "Conservative identifier-only rewrite for common BigNumber variables. Review required: type is not proven by regex engine.",
+      v5Pattern: `amountA.${method}(amountB)`,
+      v6Replacement: `(amountA ${operator} amountB)`,
+      docsUrl: DOCS,
+      confidence: "medium",
+      apply: (source) =>
+        source.replace(
+          new RegExp(`\\b(${IDENT})\\.${method}\\(\\s*(${IDENT})\\s*\\)`, "g"),
+          (_m, left: string, right: string) => `(${left} ${operator} ${right})`
+        ),
+    },
+  ];
+}
 
 /**
  * Conservative BigNumber → bigint / BigInt() transforms only where the literal is unambiguous.
@@ -66,4 +111,13 @@ export const BIGINT_MIGRATION_RULES: CodemodRule[] = [
     apply: (source) =>
       source.replace(/ethers\.BigNumber\.from\(\s*([A-Za-z_$][\w$]*)\s*\)/g, "BigInt($1)"),
   },
+  ...makeBigNumberBinaryRule("bigint:add", "BigNumber add → +", "add", "+"),
+  ...makeBigNumberBinaryRule("bigint:sub", "BigNumber sub → -", "sub", "-"),
+  ...makeBigNumberBinaryRule("bigint:mul", "BigNumber mul → *", "mul", "*"),
+  ...makeBigNumberBinaryRule("bigint:div", "BigNumber div → /", "div", "/"),
+  ...makeBigNumberBinaryRule("bigint:eq", "BigNumber eq → ===", "eq", "==="),
+  ...makeBigNumberBinaryRule("bigint:gt", "BigNumber gt → >", "gt", ">"),
+  ...makeBigNumberBinaryRule("bigint:lt", "BigNumber lt → <", "lt", "<"),
+  ...makeBigNumberBinaryRule("bigint:gte", "BigNumber gte → >=", "gte", ">="),
+  ...makeBigNumberBinaryRule("bigint:lte", "BigNumber lte → <=", "lte", "<="),
 ];
