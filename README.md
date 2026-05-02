@@ -5,12 +5,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6)](https://www.typescriptlang.org/)
 [![Codemod Registry](https://img.shields.io/badge/Codemod%20Registry-@enamorak%2Fdoublesigma--ethers--v5--to--v6-6f42c1)](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6)
 
-👉 **View on Codemod Registry:** [@enamorak/doublesigma-ethers-v5-to-v6](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6)
-⭐ **Website:** [https://doublesigma.onrender.com/](https://doublesigma.onrender.com/)
-🤑 **Video:** [https://youtu.be/RIiDbEIrk70](https://youtu.be/RIiDbEIrk70)
-📱 **Presentation:** [https://disk.yandex.ru/i/br4UM0vIpTOXSA](https://disk.yandex.ru/i/br4UM0vIpTOXSA)
-🌍 **Github:** [https://github.com/enamorak/DoubleSigma](https://github.com/enamorak/DoubleSigma)
-🛑 **X:** [https://x.com/arkhangels25781/status/2050342260684779736?s=20](https://x.com/arkhangels25781/status/2050342260684779736?s=20)
+- 👉 View on Codemod Registry: @enamorak/doublesigma-ethers-v5-to-v6
+- ⭐ Website: https://doublesigma.onrender.com/
+- 🤑 Video: https://youtu.be/RIiDbEIrk70
+- 📱 Presentation: https://disk.yandex.ru/i/br4UM0vIpTOXSA
+- 🌍 Github: https://github.com/enamorak/DoubleSigma
+- 🛑 X: https://x.com/arkhangels25781/status/2050342260684779736?s=20
+- 📢 Telegram: https://t.me/cyberpunk_production/1180?single
 
 ## Registry + Benchmarks + Accuracy
 
