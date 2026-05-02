@@ -10,8 +10,7 @@
     "tags": ["provider", "flashbots", "ethers-v5"],
     "expectedPatterns": 15,
     "difficulty": "medium",
-    "taglineEn": "Flashbots provider for ethers 5",
-    "taglineRu": "Flashbots provider для ethers 5"
+    "taglineEn": "Flashbots provider for ethers 5"
   },
   {
     "id": "uniswap-v3-sdk",

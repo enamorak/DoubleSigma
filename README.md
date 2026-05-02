@@ -55,8 +55,8 @@ Rule modules mirror the JSSG layout and ship under [`publish/ethers-v5-to-v6/`](
 
 **Registry publish**
 
-1. **Без Git на ПК (рекомендуется):** в GitHub → **Settings → Secrets and variables → Actions** создай секрет **`CODEMOD_API_KEY`** (ключ: [go.codemod.com/api-keys](https://go.codemod.com/api-keys)). Затем **Actions → “Publish Codemod Registry” → Run workflow**. Раннер сам выполнит `npm install`, `npm run registry:bundle`, проверку `workflow validate` и `codemod publish`.
-2. **Локально:** `npm run registry:bundle`, затем из `publish/ethers-v5-to-v6` — `npx codemod publish .` (нужен **Git в PATH**; иначе часто `Rolldown UnresolvedEntry`).
+1. **Recommended (no local Git):** In GitHub → **Settings → Secrets and variables → Actions**, add **`CODEMOD_API_KEY`** from [go.codemod.com/api-keys](https://go.codemod.com/api-keys). **Never commit API keys** or paste them into issues/chat. Then **Actions → “Publish Codemod Registry” → Run workflow**. The runner runs `npm install`, `npm run registry:bundle`, `workflow validate`, and `codemod publish`.
+2. **Local:** `npm run registry:bundle`, then from `publish/ethers-v5-to-v6` run `npx codemod publish .` (**Git must be on `PATH`**; otherwise you may see `Rolldown UnresolvedEntry`).
 
 ---
 

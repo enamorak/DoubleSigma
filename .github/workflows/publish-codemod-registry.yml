@@ -1,10 +1,10 @@
-# Публикация пакета в Codemod Registry (на раннере есть Git — без локального git на ПК).
+# Publish the Codemod Registry package from GitHub Actions (runner has Git).
 #
-# Настройка один раз:
-# 1. API key: https://go.codemod.com/api-keys (разрешение на publish)
-# 2. Репозиторий → Settings → Secrets and variables → Actions → New repository secret
-#    Name: CODEMOD_API_KEY   Value: <ключ>
-# 3. Закоммитьте и запушьте этот workflow в default branch.
+# One-time setup:
+# 1. Create an API key at https://go.codemod.com/api-keys (publish permission).
+# 2. Repo → Settings → Secrets and variables → Actions → New repository secret
+#    Name: CODEMOD_API_KEY   Value: (paste key once; never commit it)
+# 3. Merge this workflow to your default branch.
 # 4. Actions → "Publish Codemod Registry" → Run workflow
 
 name: Publish Codemod Registry
