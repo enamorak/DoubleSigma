@@ -1,6 +1,5 @@
 /**
- * JSSG (JavaScript ast-grep) entrypoint for Codemod Registry.
- * Runs the same rule pipeline as the npm package (`index.ts`), using the built-in `codemod:ast-grep` runtime.
+ * JSSG entry for Codemod Registry.
  */
 import type { Transform } from "codemod:ast-grep";
 import type TSX from "codemod:ast-grep/langs/tsx";
