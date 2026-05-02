@@ -53,6 +53,8 @@ DoubleSigma uses **@ast-grep/napi** — the same AST engine powering the officia
 
 Rule modules mirror the JSSG layout and ship under [`publish/ethers-v5-to-v6/`](publish/ethers-v5-to-v6/) for Codemod Registry workflows.
 
+**Registry publish:** run `npm run registry:bundle` (writes `publish/ethers-v5-to-v6/codemod.bundled.mjs`), commit that file, then `npx codemod publish` from `publish/ethers-v5-to-v6`. On Windows, use **Git in `PATH`** (`git --version` in PowerShell) and avoid non-ASCII-only paths if `Rolldown UnresolvedEntry` persists.
+
 ---
 
 ## Where the browser UI opens

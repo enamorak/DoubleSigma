@@ -1,7 +1,10 @@
 {
   "name": "@enamorak/doublesigma-ethers-v5-to-v6",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "type": "module",
-  "description": "Codemod Registry package — ethers v5→v6 JSSG workflow"
+  "description": "Codemod Registry package — ethers v5→v6 JSSG workflow",
+  "scripts": {
+    "bundle": "node ./scripts/build-registry-bundle.mjs"
+  }
 }

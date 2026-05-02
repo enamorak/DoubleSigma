@@ -1,6 +1,6 @@
 {
   "name": "@enamorak/doublesigma-ethers-v5-to-v6",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "DoubleSigma — ethers.js v5 → v6 migration via JSSG/ast-grep (AST transforms). Deterministic rules; optional quantum scan & Groq advisory in the full app.",
   "author": "enamorak",
   "license": "MIT",

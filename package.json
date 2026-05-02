@@ -27,7 +27,8 @@
     "test:network": "npm run build && node --test tests/integration/real-repos.test.mjs tests/unit/ethersproject-import.test.mjs",
     "benchmark": "npm run build && node scripts/benchmark-repos.mjs",
     "pre-submit": "npm run build && node --test tests/integration/real-repos.test.mjs tests/unit/ethersproject-import.test.mjs",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "registry:bundle": "node publish/ethers-v5-to-v6/scripts/build-registry-bundle.mjs"
   },
   "keywords": [
     "codemod",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
