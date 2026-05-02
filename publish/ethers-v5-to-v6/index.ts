@@ -34,4 +34,5 @@ export function transformFile(filePath: string, source: string): FileChange | nu
   };
 }
 
-export { getCodemodCatalog, type CodemodRule, type CodemodRuleMeta } from "./rulesCatalog.js";
+export { getCodemodCatalog } from "./rulesCatalog.js";
+export type { CodemodRule, CodemodRuleMeta, CodemodConfidence } from "./types.js";

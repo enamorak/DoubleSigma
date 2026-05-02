@@ -1,5 +1,5 @@
 export { transformFile, getCodemodCatalog } from "./codemods/index.js";
-export type { CodemodRuleMeta, CodemodConfidence } from "./codemods/codemod-types.js";
+export type { CodemodRuleMeta, CodemodConfidence } from "./codemods/types.js";
 export { runDryMigration } from "./runner/dry-run.js";
 export { runApplyMigration } from "./runner/apply.js";
 export { collectMetrics } from "./runner/metrics.js";

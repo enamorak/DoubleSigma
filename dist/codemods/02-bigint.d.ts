@@ -1,4 +1,4 @@
-import type { CodemodRule } from "./codemod-types.js";
+import type { CodemodRule } from "./types.js";
 /**
  * Conservative BigNumber → bigint / BigInt() transforms only where the match is structurally clear.
  */

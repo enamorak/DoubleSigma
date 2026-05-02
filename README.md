@@ -38,10 +38,20 @@ DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patt
 
 - **CLI** and **local web UI** (same engine).
 - **GitHub URL import** via the official zipball API (no local `git` required).
-- A **catalog of every codemod** (titles, descriptions, v5/v6 hints) exposed at `GET /api/rules`.
+- A **catalog of every codemod** (titles, descriptions, `was` / `now` hints) exposed at `GET /api/rules`.
 - After each run, the API returns **`appliedRulesSummary`** (what actually rewrote your code) and **`rulesWithoutMatch`** (catalog entries that did not hit).
 
 Published package on Codemod Registry: [@enamorak/doublesigma-ethers-v5-to-v6](https://app.codemod.com/registry/@enamorak/doublesigma-ethers-v5-to-v6).
+
+## Codemod engine
+
+DoubleSigma uses **@ast-grep/napi** — the same AST engine powering the official **JSSG** framework from Codemod.com. Every transformation is:
+
+- **AST-based** — no regex over source files, no fragile whole-file `String#replace` passes; edits are driven by ast-grep `findAll` and byte-range rewrites in [`src/codemods/ast-helpers.ts`](src/codemods/ast-helpers.ts).
+- **Deterministic** — same input always produces the same output.
+- **Context-aware** — respects language syntax (tree-sitter grammar), not flat text patterns.
+
+Rule modules mirror the JSSG layout and ship under [`publish/ethers-v5-to-v6/`](publish/ethers-v5-to-v6/) for Codemod Registry workflows.
 
 ---
 
@@ -180,7 +190,7 @@ Infrastructure config is included in [`render.yaml`](render.yaml).
 | Method | Path | Purpose |
 |--------|------|---------|
 | `GET` | `/` | Dashboard (static HTML). |
-| `GET` | `/api/rules` | JSON catalog: `{ rules: CodemodRuleMeta[] }`. |
+| `GET` | `/api/rules` | JSON catalog: `{ rules: CodemodRuleMeta[] }` (`id`, `title`, `confidence`, `description`, `was`, `now`, optional `docsUrl`). |
 | `GET` | `/api/presets` | Curated GitHub repos for the UI (reads `data/benchmark-repositories.json`, then `public/presets.json`, then cwd fallbacks). |
 | `POST` | `/api/benchmark` | **`{ repoUrl, ref?, quantum?, ai? }`** → `BenchmarkRunResponse` (metrics, `rulesTriggered`, `quantumInsights`, optional `aiMetrics` / `aiNotes`). |
 | `GET` | `/presets.json` | Same JSON array as presets (explicit route + static fallback). |
@@ -209,7 +219,7 @@ If the key is missing, migrations still run; `aiMetrics` will show zeros and `ai
 
 ## Implemented codemods
 
-Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core + [`02-bigint.ts`](src/codemods/02-bigint.ts) + narrow [`04-contracts.ts`](src/codemods/04-contracts.ts) + [`05-ethersproject.ts`](src/codemods/05-ethersproject.ts)). Each rule applies **ast-grep patterns** (`findAll` → `replace` → `commitEdits`), not regex over raw text. Examples:
+Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core + [`02-bigint.ts`](src/codemods/02-bigint.ts) + [`04-contracts.ts`](src/codemods/04-contracts.ts) + [`05-ethersproject.ts`](src/codemods/05-ethersproject.ts)). Each rule uses **ast-grep** `findAll` plus deterministic **slice-based** rewrites from [`ast-helpers.ts`](src/codemods/ast-helpers.ts) (no `String#replace` on the full source). Examples:
 
 - `ethers.providers.Web3Provider` → `ethers.BrowserProvider`
 - `ethers.providers.JsonRpcProvider` / `providers.JsonRpcProvider` → `ethers.JsonRpcProvider`

@@ -1,6 +1,6 @@
-import type { Edit, SgNode } from "@ast-grep/napi";
-import { transformSource } from "./ast-helpers.js";
-import type { CodemodRule } from "./codemod-types.js";
+import type { SgNode } from "@ast-grep/napi";
+import { isDecimalDigits, isHexStringBody, transformSource } from "./ast-helpers.js";
+import type { CodemodRule } from "./types.js";
 
 const DOCS = "https://docs.ethers.org/v6/migrating/";
 
@@ -16,68 +16,52 @@ function makeBigNumberBinaryRule(
     {
       id: `${id}:from-chain`,
       title: `${title} (BigNumber.from(...).${method}(BigNumber.from(...)))`,
+      confidence: "medium",
       description:
         "Converts direct BigNumber.from(...) method chains to bigint operators. Matches explicit ethers.BigNumber.from on both sides.",
-      v5Pattern: `ethers.BigNumber.from(a).${method}(ethers.BigNumber.from(b))`,
-      v6Replacement: `(BigInt(a) ${operator} BigInt(b))`,
+      was: `ethers.BigNumber.from(a).${method}(ethers.BigNumber.from(b))`,
+      now: `(BigInt(a) ${operator} BigInt(b))`,
       docsUrl: DOCS,
-      confidence: "medium",
       apply: (source, fp) =>
-        transformSource(source, fp, (root) => {
-          const edits: Edit[] = [];
-          for (const node of root.findAll(chainPattern)) {
-            const a = node.getMatch("A")?.text();
-            const b = node.getMatch("B")?.text();
-            if (a != null && b != null) {
-              edits.push(node.replace(`(BigInt(${a}) ${operator} BigInt(${b}))`));
-            }
-          }
-          if (edits.length === 0) return null;
-          return root.commitEdits(edits);
-        }),
+        transformSource(source, chainPattern, (node) => {
+          const a = node.getMatch("A")?.text();
+          const b = node.getMatch("B")?.text();
+          if (a == null || b == null) return node.text();
+          return `(BigInt(${a}) ${operator} BigInt(${b}))`;
+        }, fp).code,
     },
     {
       id: `${id}:identifier-chain`,
       title: `${title} (identifier.${method}(identifier))`,
+      confidence: "medium",
       description:
         "Conservative identifier-only rewrite for common BigNumber variables. Review: type is not proven by the matcher.",
-      v5Pattern: `amountA.${method}(amountB)`,
-      v6Replacement: `(amountA ${operator} amountB)`,
+      was: `amountA.${method}(amountB)`,
+      now: `(amountA ${operator} amountB)`,
       docsUrl: DOCS,
-      confidence: "medium",
       apply: (source, fp) =>
-        transformSource(source, fp, (root) => {
-          const edits: Edit[] = [];
-          for (const node of root.findAll(identPattern)) {
-            const l = node.getMatch("L");
-            const r = node.getMatch("R");
-            if (l?.kind() === "identifier" && r?.kind() === "identifier") {
-              edits.push(node.replace(`(${l.text()} ${operator} ${r.text()})`));
-            }
-          }
-          if (edits.length === 0) return null;
-          return root.commitEdits(edits);
-        }),
+        transformSource(source, identPattern, (node) => {
+          const l = node.getMatch("L");
+          const r = node.getMatch("R");
+          if (l?.kind() !== "identifier" || r?.kind() !== "identifier") return node.text();
+          return `(${l.text()} ${operator} ${r.text()})`;
+        }, fp).code,
     },
   ];
 }
 
-function editsForBigNumberFromStrings(
-  root: SgNode,
+function bigNumberFromStringReplacer(
+  match: SgNode,
   pred: (inner: string, quote: '"' | "'") => string | null
-): Edit[] {
-  const edits: Edit[] = [];
-  for (const node of root.findAll("ethers.BigNumber.from($S)")) {
-    const cap = node.getMatch("S");
-    if (!cap || cap.kind() !== "string") continue;
-    const raw = cap.text();
-    const q = raw[0];
-    if (q !== '"' && q !== "'") continue;
-    const inner = raw.slice(1, -1);
-    const rep = pred(inner, q);
-    if (rep != null) edits.push(node.replace(rep));
-  }
-  return edits;
+): string {
+  const cap = match.getMatch("S");
+  if (!cap || cap.kind() !== "string") return match.text();
+  const raw = cap.text();
+  const q = raw[0];
+  if (q !== '"' && q !== "'") return match.text();
+  const inner = raw.slice(1, -1);
+  const rep = pred(inner, q);
+  return rep ?? match.text();
 }
 
 /**
@@ -87,88 +71,88 @@ export const BIGINT_MIGRATION_RULES: CodemodRule[] = [
   {
     id: "bigint:from-decimal-string-double",
     title: 'BigNumber.from("digits") → bigint literal',
+    confidence: "high",
     description: "Only pure decimal string literals in double quotes.",
-    v5Pattern: 'ethers.BigNumber.from("12345")',
-    v6Replacement: "12345n",
+    was: 'ethers.BigNumber.from("12345")',
+    now: "12345n",
     docsUrl: DOCS,
     apply: (source, fp) =>
-      transformSource(source, fp, (root) => {
-        const edits = editsForBigNumberFromStrings(root, (inner, q) =>
-          q === '"' && /^\d+$/.test(inner) ? `${inner}n` : null
-        );
-        if (edits.length === 0) return null;
-        return root.commitEdits(edits);
-      }),
+      transformSource(
+        source,
+        "ethers.BigNumber.from($S)",
+        (m) => bigNumberFromStringReplacer(m, (inner, q) => (q === '"' && isDecimalDigits(inner) ? `${inner}n` : null)),
+        fp
+      ).code,
   },
   {
     id: "bigint:from-decimal-string-single",
     title: "BigNumber.from('digits') → bigint literal",
+    confidence: "high",
     description: "Only pure decimal string literals in single quotes.",
-    v5Pattern: "ethers.BigNumber.from('12345')",
-    v6Replacement: "12345n",
+    was: "ethers.BigNumber.from('12345')",
+    now: "12345n",
     docsUrl: DOCS,
     apply: (source, fp) =>
-      transformSource(source, fp, (root) => {
-        const edits = editsForBigNumberFromStrings(root, (inner, q) =>
-          q === "'" && /^\d+$/.test(inner) ? `${inner}n` : null
-        );
-        if (edits.length === 0) return null;
-        return root.commitEdits(edits);
-      }),
+      transformSource(
+        source,
+        "ethers.BigNumber.from($S)",
+        (m) => bigNumberFromStringReplacer(m, (inner, q) => (q === "'" && isDecimalDigits(inner) ? `${inner}n` : null)),
+        fp
+      ).code,
   },
   {
     id: "bigint:from-hex-string",
     title: 'BigNumber.from("0x…") → BigInt("0x…")',
+    confidence: "high",
     description: "Hex payloads as double-quoted strings become native BigInt.",
-    v5Pattern: 'ethers.BigNumber.from("0x…")',
-    v6Replacement: 'BigInt("0x…")',
+    was: 'ethers.BigNumber.from("0x…")',
+    now: 'BigInt("0x…")',
     docsUrl: DOCS,
     apply: (source, fp) =>
-      transformSource(source, fp, (root) => {
-        const edits = editsForBigNumberFromStrings(root, (inner, q) =>
-          q === '"' && /^0x[0-9a-fA-F]+$/.test(inner) ? `BigInt("${inner}")` : null
-        );
-        if (edits.length === 0) return null;
-        return root.commitEdits(edits);
-      }),
+      transformSource(
+        source,
+        "ethers.BigNumber.from($S)",
+        (m) =>
+          bigNumberFromStringReplacer(m, (inner, q) =>
+            q === '"' && isHexStringBody(inner) ? `BigInt("${inner}")` : null
+          ),
+        fp
+      ).code,
   },
   {
     id: "bigint:from-hex-string-single",
     title: "BigNumber.from('0x…') → BigInt('0x…')",
+    confidence: "high",
     description: "Hex payloads as single-quoted strings become native BigInt.",
-    v5Pattern: "ethers.BigNumber.from('0x…')",
-    v6Replacement: "BigInt('0x…')",
+    was: "ethers.BigNumber.from('0x…')",
+    now: "BigInt('0x…')",
     docsUrl: DOCS,
     apply: (source, fp) =>
-      transformSource(source, fp, (root) => {
-        const edits = editsForBigNumberFromStrings(root, (inner, q) =>
-          q === "'" && /^0x[0-9a-fA-F]+$/.test(inner) ? `BigInt('${inner}')` : null
-        );
-        if (edits.length === 0) return null;
-        return root.commitEdits(edits);
-      }),
+      transformSource(
+        source,
+        "ethers.BigNumber.from($S)",
+        (m) =>
+          bigNumberFromStringReplacer(m, (inner, q) =>
+            q === "'" && isHexStringBody(inner) ? `BigInt('${inner}')` : null
+          ),
+        fp
+      ).code,
   },
   {
     id: "bigint:from-simple-identifier",
     title: "ethers.BigNumber.from(identifier) → BigInt(identifier)",
+    confidence: "medium",
     description:
       "Only a single identifier argument (not calls or string literals). May be wrong for decimal string variables — review.",
-    v5Pattern: "ethers.BigNumber.from(myVar)",
-    v6Replacement: "BigInt(myVar)",
+    was: "ethers.BigNumber.from(myVar)",
+    now: "BigInt(myVar)",
     docsUrl: DOCS,
-    confidence: "medium",
     apply: (source, fp) =>
-      transformSource(source, fp, (root) => {
-        const edits: Edit[] = [];
-        for (const node of root.findAll("ethers.BigNumber.from($X)")) {
-          const x = node.getMatch("X");
-          if (x?.kind() === "identifier") {
-            edits.push(node.replace(`BigInt(${x.text()})`));
-          }
-        }
-        if (edits.length === 0) return null;
-        return root.commitEdits(edits);
-      }),
+      transformSource(source, "ethers.BigNumber.from($X)", (node) => {
+        const x = node.getMatch("X");
+        if (x?.kind() !== "identifier") return node.text();
+        return `BigInt(${x.text()})`;
+      }, fp).code,
   },
   ...makeBigNumberBinaryRule("bigint:add", "BigNumber add → +", "add", "+"),
   ...makeBigNumberBinaryRule("bigint:sub", "BigNumber sub → -", "sub", "-"),
