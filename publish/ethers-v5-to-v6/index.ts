@@ -15,7 +15,7 @@ export function transformFile(filePath: string, source: string): FileChange | nu
   const appliedRules: string[] = [];
 
   for (const rule of CODEMOD_RULES) {
-    const next = rule.apply(current);
+    const next = rule.apply(current, filePath);
     if (next !== current) {
       appliedRules.push(rule.id);
       current = next;

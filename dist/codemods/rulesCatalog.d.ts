@@ -1,5 +1,5 @@
 /**
- * Single source of truth: codemod metadata + transform (deterministic string replace).
+ * Codemod metadata + ast-grep transforms (structural patterns, not regex).
  * IDs are stable for API and UI.
  */
 import type { CodemodRule, CodemodRuleMeta } from "./codemod-types.js";

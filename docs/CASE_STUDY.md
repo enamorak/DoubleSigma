@@ -66,6 +66,7 @@ When `ai: true` and `GROQ_API_KEY` is present, DoubleSigma selects up to **five 
 ## Technical Deep Dive (Short)
 
 - **Runner:** `migrationJob` orchestrates dry-run/apply, optional quantum scan, optional AI pass, and log formatting.
+- **Codemods:** ethers v5→v6 rewrites use **ast-grep** structural patterns (`@ast-grep/napi` locally; JSSG `codemod:ast-grep` in the Registry package).
 - **GitHub path:** `prepareGithubRepo` downloads the official zipball; `migrateFromGithubHttpsUrl` wires CLI flags and cleanup.
 - **Web:** `server.ts` exposes REST endpoints; `public/index.html` is a static dashboard (no React bundle) to reduce hackathon friction.
 - **Groq client:** `fetch` to OpenAI-compatible Groq endpoint; **SHA-256** cache of `(role, content)` tuples to avoid duplicate billing on identical snippets.
@@ -74,7 +75,7 @@ When `ai: true` and `GROQ_API_KEY` is present, DoubleSigma selects up to **five 
 
 ## What’s Next
 
-1. **AST / jssg** — graduate high-risk patterns from regex to typed transforms.
+1. **Type-aware rules** — optional oxc/TypeScript semantic hints on top of ast-grep for `Provider` vs `Contract` call sites.
 2. **More benchmarks** — expand manifest with repos that stress `BigNumber` chains and events.
 3. **Registry** — package metadata for Codemod Registry / community folder (`registry/` starter files in-repo).
 4. **Human FP tracking** — wire `falsePositives` to issue templates or CSV sign-off.

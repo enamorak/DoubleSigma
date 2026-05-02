@@ -7,10 +7,14 @@ export interface CodemodRuleMeta {
   v5Pattern: string;
   v6Replacement: string;
   docsUrl?: string;
-  /** Deterministic string replace = high; import-path / alias rewrites = medium by default. */
+  /** Import-path / heuristic rewrites default to medium. */
   confidence?: CodemodConfidence;
 }
 
 export interface CodemodRule extends CodemodRuleMeta {
-  apply: (source: string) => string;
+  /**
+   * Applies the rule using ast-grep structural matching on the parsed file.
+   * `filePath` selects the grammar (ts / tsx / js); extension-less callers should pass a `.ts` path.
+   */
+  apply: (source: string, filePath?: string) => string;
 }

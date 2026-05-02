@@ -1,10 +1,11 @@
+import type { Edit, SgNode } from "@ast-grep/napi";
+import { transformSource } from "./ast-helpers.js";
 import type { CodemodRule } from "./codemod-types.js";
 
 const DOCS = "https://docs.ethers.org/v6/migrating/";
 
 /**
  * Narrow transforms for split @ethersproject/* packages (ethers v5 style).
- * Prefer small, reviewable edits; v6 uses the unified `ethers` export for many of these.
  */
 export const ETHERSPROJECT_RULES: CodemodRule[] = [
   {
@@ -16,7 +17,13 @@ export const ETHERSPROJECT_RULES: CodemodRule[] = [
     v6Replacement: 'from "ethers"',
     docsUrl: DOCS,
     confidence: "medium",
-    apply: (source) => source.replace(/from\s+['"]@ethersproject\/abi['"]/g, 'from "ethers"'),
+    apply: (source, fp) =>
+      transformSource(source, fp, (root) =>
+        replacePatternsAbi(root, [
+          [`import { $$$SPEC } from '@ethersproject/abi'`, `import { $$$SPEC } from "ethers"`],
+          [`import { $$$SPEC } from "@ethersproject/abi"`, `import { $$$SPEC } from "ethers"`],
+        ])
+      ),
   },
   {
     id: "ethersproject:import-jsonrpc-from-providers",
@@ -27,25 +34,41 @@ export const ETHERSPROJECT_RULES: CodemodRule[] = [
     v6Replacement: 'import { JsonRpcProvider } from "ethers"',
     docsUrl: DOCS,
     confidence: "medium",
-    apply: (source) =>
-      source.replace(
-        /import\s*{\s*JsonRpcProvider\s*}\s*from\s*['"]@ethersproject\/providers['"]/g,
-        'import { JsonRpcProvider } from "ethers"'
+    apply: (source, fp) =>
+      transformSource(source, fp, (root) =>
+        replacePatternsAbi(root, [
+          [
+            `import { JsonRpcProvider } from '@ethersproject/providers'`,
+            `import { JsonRpcProvider } from "ethers"`,
+          ],
+          [
+            `import { JsonRpcProvider } from "@ethersproject/providers"`,
+            `import { JsonRpcProvider } from "ethers"`,
+          ],
+        ])
       ),
   },
   {
     id: "ethersproject:import-web3provider-from-providers",
     title: "@ethersproject/providers (Web3Provider) → BrowserProvider (ethers)",
     description:
-      "Rewrites the import only. Rename `new Web3Provider(...)` → `new BrowserProvider(...)` manually if TypeScript still references Web3Provider.",
+      "Rewrites the import only. Use `new BrowserProvider(...)` at call sites if TypeScript still references Web3Provider.",
     v5Pattern: "import { Web3Provider } from '@ethersproject/providers'",
     v6Replacement: 'import { BrowserProvider } from "ethers"',
     docsUrl: DOCS,
     confidence: "medium",
-    apply: (source) =>
-      source.replace(
-        /import\s*{\s*Web3Provider\s*}\s*from\s*['"]@ethersproject\/providers['"]/g,
-        'import { BrowserProvider } from "ethers"'
+    apply: (source, fp) =>
+      transformSource(source, fp, (root) =>
+        replacePatternsAbi(root, [
+          [
+            `import { Web3Provider } from '@ethersproject/providers'`,
+            `import { BrowserProvider } from "ethers"`,
+          ],
+          [
+            `import { Web3Provider } from "@ethersproject/providers"`,
+            `import { BrowserProvider } from "ethers"`,
+          ],
+        ])
       ),
   },
   {
@@ -58,10 +81,32 @@ export const ETHERSPROJECT_RULES: CodemodRule[] = [
       "import { BigNumber as BigNumberV5 } from '…' // MANUAL_REVIEW: ethers v6 — migrate to bigint",
     docsUrl: DOCS,
     confidence: "medium",
-    apply: (source) =>
-      source.replace(
-        /import\s*{\s*BigNumber\s*}\s*from\s*(['"])@ethersproject\/bignumber\1(\s*;?)/g,
-        "import { BigNumber as BigNumberV5 } from $1@ethersproject/bignumber$1 // MANUAL_REVIEW: ethers v6 — migrate usages to bigint$2"
-      ),
+    apply: (source, fp) =>
+      transformSource(source, fp, (root) => {
+        const edits: Edit[] = [];
+        for (const node of root.findAll("import { BigNumber } from $P")) {
+          const p = node.getMatch("P");
+          const pt = p?.text();
+          if (!pt || !pt.includes("@ethersproject/bignumber")) continue;
+          edits.push(
+            node.replace(
+              `import { BigNumber as BigNumberV5 } from ${pt} // MANUAL_REVIEW: ethers v6 — migrate usages to bigint`
+            )
+          );
+        }
+        if (edits.length === 0) return null;
+        return root.commitEdits(edits);
+      }),
   },
 ];
+
+function replacePatternsAbi(root: SgNode, pairs: Array<[string, string]>): string | null {
+  const edits: Edit[] = [];
+  for (const [pattern, replacement] of pairs) {
+    for (const n of root.findAll(pattern)) {
+      edits.push(n.replace(replacement));
+    }
+  }
+  if (edits.length === 0) return null;
+  return root.commitEdits(edits);
+}

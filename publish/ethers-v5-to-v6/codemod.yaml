@@ -2,7 +2,7 @@ schema_version: "1.0"
 
 name: "@enamorak/doublesigma-ethers-v5-to-v6"
 version: "1.0.0"
-description: "DoubleSigma deterministic codemod for ethers.js v5 -> v6 migration."
+description: "DoubleSigma ethers.js v5 -> v6 migration via JSSG (ast-grep) structural transforms."
 author: "enamorak"
 license: "MIT"
 workflow: "workflow.yaml"

@@ -1,7 +1,7 @@
 {
   "name": "doublesigma-ethers-v6",
   "version": "0.1.0",
-  "description": "Deterministic ethers.js v5 to v6 migration tool with quantum-inspired scoring.",
+  "description": "Deterministic ethers.js v5 to v6 migration via ast-grep (JSSG-compatible) with quantum-inspired scoring.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -40,6 +40,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@ast-grep/napi": "^0.42.1",
     "adm-zip": "^0.5.16",
     "express": "^4.21.0"
   },

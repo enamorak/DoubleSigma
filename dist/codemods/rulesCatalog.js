@@ -1,10 +1,11 @@
 /**
- * Single source of truth: codemod metadata + transform (deterministic string replace).
+ * Codemod metadata + ast-grep transforms (structural patterns, not regex).
  * IDs are stable for API and UI.
  */
 import { BIGINT_MIGRATION_RULES } from "./02-bigint.js";
 import { CONTRACT_MIGRATION_RULES } from "./04-contracts.js";
 import { ETHERSPROJECT_RULES } from "./05-ethersproject.js";
+import { replacePattern, transformSource } from "./ast-helpers.js";
 const DOCS = "https://docs.ethers.org/v6/migrating/";
 const CORE_RULES = [
     {
@@ -14,7 +15,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.providers.Web3Provider",
         v6Replacement: "ethers.BrowserProvider",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.providers\.Web3Provider/g, "ethers.BrowserProvider"),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.providers.Web3Provider", "ethers.BrowserProvider")),
     },
     {
         id: "providers:jsonrpc-nested",
@@ -23,7 +24,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.providers.JsonRpcProvider",
         v6Replacement: "ethers.JsonRpcProvider",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.providers\.JsonRpcProvider/g, "ethers.JsonRpcProvider"),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.providers.JsonRpcProvider", "ethers.JsonRpcProvider")),
     },
     {
         id: "providers:jsonrpc-destructured",
@@ -32,7 +33,7 @@ const CORE_RULES = [
         v5Pattern: "providers.JsonRpcProvider",
         v6Replacement: "ethers.JsonRpcProvider",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/\bproviders\.JsonRpcProvider\b/g, "ethers.JsonRpcProvider"),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "providers.JsonRpcProvider", "ethers.JsonRpcProvider")),
     },
     {
         id: "providers:get-network-nested",
@@ -41,7 +42,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.providers.getNetwork(",
         v6Replacement: "ethers.getNetwork(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.providers\.getNetwork\(/g, "ethers.getNetwork("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.providers.getNetwork($$$ARGS)", "ethers.getNetwork($$$ARGS)")),
     },
     {
         id: "providers:broadcast-transaction",
@@ -50,7 +51,7 @@ const CORE_RULES = [
         v5Pattern: ".sendTransaction(",
         v6Replacement: ".broadcastTransaction(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/\.sendTransaction\(/g, ".broadcastTransaction("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "$RX.sendTransaction($$$ARGS)", "$RX.broadcastTransaction($$$ARGS)")),
     },
     {
         id: "constants:address-zero",
@@ -59,7 +60,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.constants.AddressZero",
         v6Replacement: "ethers.ZeroAddress",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.constants\.AddressZero/g, "ethers.ZeroAddress"),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.constants.AddressZero", "ethers.ZeroAddress")),
     },
     {
         id: "constants:hash-zero",
@@ -68,7 +69,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.constants.HashZero",
         v6Replacement: "ethers.ZeroHash",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.constants\.HashZero/g, "ethers.ZeroHash"),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.constants.HashZero", "ethers.ZeroHash")),
     },
     {
         id: "utils:format-bytes32",
@@ -77,7 +78,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.formatBytes32String(",
         v6Replacement: "ethers.encodeBytes32String(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.formatBytes32String\(/g, "ethers.encodeBytes32String("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.formatBytes32String($$$A)", "ethers.encodeBytes32String($$$A)")),
     },
     {
         id: "utils:parse-bytes32",
@@ -86,7 +87,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.parseBytes32String(",
         v6Replacement: "ethers.decodeBytes32String(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.parseBytes32String\(/g, "ethers.decodeBytes32String("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.parseBytes32String($$$A)", "ethers.decodeBytes32String($$$A)")),
     },
     {
         id: "utils:hex-data-slice",
@@ -95,7 +96,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.hexDataSlice(",
         v6Replacement: "ethers.dataSlice(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.hexDataSlice\(/g, "ethers.dataSlice("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.hexDataSlice($$$A)", "ethers.dataSlice($$$A)")),
     },
     {
         id: "utils:hex-zero-pad",
@@ -104,7 +105,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.hexZeroPad(",
         v6Replacement: "ethers.zeroPadValue(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.hexZeroPad\(/g, "ethers.zeroPadValue("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.hexZeroPad($$$A)", "ethers.zeroPadValue($$$A)")),
     },
     {
         id: "utils:hex-value",
@@ -113,7 +114,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.hexValue(",
         v6Replacement: "ethers.toQuantity(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.hexValue\(/g, "ethers.toQuantity("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.hexValue($$$A)", "ethers.toQuantity($$$A)")),
     },
     {
         id: "utils:arrayify",
@@ -122,7 +123,7 @@ const CORE_RULES = [
         v5Pattern: "ethers.utils.arrayify(",
         v6Replacement: "ethers.getBytes(",
         docsUrl: DOCS,
-        apply: (source) => source.replace(/ethers\.utils\.arrayify\(/g, "ethers.getBytes("),
+        apply: (source, fp) => transformSource(source, fp, (root) => replacePattern(root, "ethers.utils.arrayify($$$A)", "ethers.getBytes($$$A)")),
     },
 ];
 export const CODEMOD_RULES = [

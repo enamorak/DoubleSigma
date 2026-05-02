@@ -24,11 +24,11 @@
 | [NomicFoundation/hardhat](https://github.com/NomicFoundation/hardhat) | ✅ | 29 | 1.8% (29/1580) | 19.962s |
 | [traderjoe-xyz/joe-v2](https://github.com/traderjoe-xyz/joe-v2) | ✅ | 0 | — (0 scanned) | 0.879s |
 
-- **Accuracy posture:** deterministic rule engine, rule-level confidence tags (`high` / `medium` / `low`), and **0 false positives reported** in benchmark runs.
+- **Accuracy posture:** deterministic **[ast-grep](https://ast-grep.github.io/)** rules (structural patterns on the TS/JS AST), rule-level confidence tags (`high` / `medium` / `low`), and **0 false positives reported** in benchmark runs.
 - **Quantum features:** `quantumInsights` reports latent markers (`latentBigNumberMarkers`, `latentNestedProviderMarkers`, `latentDeployedCalls`, `latentEthersProjectImports`) plus `superpositionCoverage`.
 - **AI features:** optional Groq advisory reviews changed files and returns notes/metrics (`tokensUsed`, `filesProcessed`, `apiCalls`) without auto-applying edits.
 
-DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patterns, with:
+DoubleSigma is a **deterministic** migrator for common ethers v5 → v6 API patterns. Rewrites use **[ast-grep](https://ast-grep.github.io/)** (the same engine as Codemod **[JSSG](https://docs.codemod.com/jssg/quickstart)**): local runs use `@ast-grep/napi`; the Registry package runs the same rules inside the `codemod:ast-grep` sandbox. The tool ships with:
 
 - **CLI** and **local web UI** (same engine).
 - **GitHub URL import** via the official zipball API (no local `git` required).
@@ -69,7 +69,7 @@ The dashboard UI is **English** (steps, presets, catalog). Run **`npm run ui`** 
 | | DoubleSigma | Manual migration | Generic codemods |
 |---|-------------|------------------|------------------|
 | **Ethers v5→v6 + `@ethersproject/*`** | ✅ Dedicated rule catalog (deterministic core + reviewed import-path rules) | ❌ Slow, inconsistent | ❌ No standard Web3 migration in public registry narratives |
-| **False positives (core rules)** | ✅ String-level deterministic transforms | ❌ Human error | ⚠️ Tool-dependent |
+| **False positives (core rules)** | ✅ AST-level deterministic transforms (ast-grep) | ❌ Human error | ⚠️ Tool-dependent |
 | **Quantum-style latent scan** | ✅ Debt signals in API/UI | ❌ | ❌ |
 | **Optional AI (Groq)** | ✅ Advisory only (no auto-apply from LLM) | ❌ | ⚠️ Some tools |
 | **Real GitHub benchmarks** | ✅ 8-repo dry-run harness + CSV/JSON/HTML export | ❌ | ⚠️ Rare for this stack |
@@ -203,12 +203,12 @@ If the key is missing, migrations still run; `aiMetrics` will show zeros and `ai
 
 ## Implemented codemods
 
-Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core + [`02-bigint.ts`](src/codemods/02-bigint.ts) + narrow [`04-contracts.ts`](src/codemods/04-contracts.ts)). Examples:
+Rules are merged in [`src/codemods/rulesCatalog.ts`](src/codemods/rulesCatalog.ts) (core + [`02-bigint.ts`](src/codemods/02-bigint.ts) + narrow [`04-contracts.ts`](src/codemods/04-contracts.ts) + [`05-ethersproject.ts`](src/codemods/05-ethersproject.ts)). Each rule applies **ast-grep patterns** (`findAll` → `replace` → `commitEdits`), not regex over raw text. Examples:
 
 - `ethers.providers.Web3Provider` → `ethers.BrowserProvider`
 - `ethers.providers.JsonRpcProvider` / `providers.JsonRpcProvider` → `ethers.JsonRpcProvider`
 - `ethers.providers.getNetwork(` → `ethers.getNetwork(` (verify for your usage)
-- `.sendTransaction(` → `.broadcastTransaction(` (provider-style calls — review for false positives)
+- `.sendTransaction(` → `.broadcastTransaction(` (call-expression pattern `$RX.sendTransaction(…)` — review: contracts also expose `sendTransaction`)
 - `ethers.constants.AddressZero` / `HashZero` → `ethers.ZeroAddress` / `ethers.ZeroHash`
 - Common `ethers.utils.*` → root helpers (`dataSlice`, `zeroPadValue`, `toQuantity`, `getBytes`, bytes32 helpers, …)
 - BigNumber arithmetic/comparisons (reviewed, medium confidence): `.add()`, `.sub()`, `.mul()`, `.div()`, `.eq()`, `.gt()`, `.lt()`, `.gte()`, `.lte()`
@@ -221,7 +221,7 @@ See the web catalog or `GET /api/rules` for the full list with descriptions.
 ## Architecture
 
 ```text
-CLI ──┬──► migrationJob ──► dry-run / apply ──► codemods (rulesCatalog)
+CLI ──┬──► migrationJob ──► dry-run / apply ──► codemods (rulesCatalog + @ast-grep/napi)
       │
       └──► migrateFromGithub ──► githubArchive (zipball) ──► migrationJob
 
@@ -254,7 +254,7 @@ Manifest: [`tests/integration/repos.manifest.json`](tests/integration/repos.mani
 
 ## Honest limitations
 
-- Replacements are **regex/string-based**, not full AST / jssg yet — narrow patterns only; review diffs.
+- Rules are **syntax-driven**, not type-aware: ast-grep does not know whether a value is a `Provider` vs a `Contract`, so medium-confidence rewrites (e.g. `sendTransaction`, identifier `BigNumber` chains) still need human review.
 - **GitHub HTTPS only** for URL import (no GitLab in-app; unauthenticated API rate limits apply).
 - **Groq AI** is advisory only (no auto-apply); rate limits and model availability apply.
 - Narrow `await x.deployed()` removal can misfire if a non-ethers API uses the same shape — rare; still review.

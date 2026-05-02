@@ -4,5 +4,11 @@ nodes:
     name: Apply ethers v5->v6 codemod
     type: automatic
     steps:
-      - name: Package metadata step
-        run: echo "DoubleSigma ethers v5->v6 codemod package"
+      - name: DoubleSigma JSSG (ast-grep) transforms
+        js-ast-grep:
+          js_file: "scripts/codemod.ts"
+          language: "tsx"
+          include:
+            - "**/*.{ts,tsx,js,jsx}"
+          exclude:
+            - "**/node_modules/**"
