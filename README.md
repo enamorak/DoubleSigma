@@ -53,7 +53,10 @@ DoubleSigma uses **@ast-grep/napi** — the same AST engine powering the officia
 
 Rule modules mirror the JSSG layout and ship under [`publish/ethers-v5-to-v6/`](publish/ethers-v5-to-v6/) for Codemod Registry workflows.
 
-**Registry publish:** run `npm run registry:bundle` (writes `publish/ethers-v5-to-v6/codemod.bundled.mjs`), commit that file, then `npx codemod publish` from `publish/ethers-v5-to-v6`. On Windows, use **Git in `PATH`** (`git --version` in PowerShell) and avoid non-ASCII-only paths if `Rolldown UnresolvedEntry` persists.
+**Registry publish**
+
+1. **Без Git на ПК (рекомендуется):** в GitHub → **Settings → Secrets and variables → Actions** создай секрет **`CODEMOD_API_KEY`** (ключ: [go.codemod.com/api-keys](https://go.codemod.com/api-keys)). Затем **Actions → “Publish Codemod Registry” → Run workflow**. Раннер сам выполнит `npm install`, `npm run registry:bundle`, проверку `workflow validate` и `codemod publish`.
+2. **Локально:** `npm run registry:bundle`, затем из `publish/ethers-v5-to-v6` — `npx codemod publish .` (нужен **Git в PATH**; иначе часто `Rolldown UnresolvedEntry`).
 
 ---
 

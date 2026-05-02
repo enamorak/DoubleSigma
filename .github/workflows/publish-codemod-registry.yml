@@ -1,0 +1,50 @@
+# Публикация пакета в Codemod Registry (на раннере есть Git — без локального git на ПК).
+#
+# Настройка один раз:
+# 1. API key: https://go.codemod.com/api-keys (разрешение на publish)
+# 2. Репозиторий → Settings → Secrets and variables → Actions → New repository secret
+#    Name: CODEMOD_API_KEY   Value: <ключ>
+# 3. Закоммитьте и запушьте этот workflow в default branch.
+# 4. Actions → "Publish Codemod Registry" → Run workflow
+
+name: Publish Codemod Registry
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: codemod-registry-publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Bundle JSSG entry (codemod.bundled.mjs)
+        run: npm run registry:bundle
+
+      - name: Validate Codemod package
+        run: npx codemod@latest workflow validate -w publish/ethers-v5-to-v6
+
+      - name: Publish to Codemod Registry
+        working-directory: publish/ethers-v5-to-v6
+        env:
+          CODEMOD_AUTH_TOKEN: ${{ secrets.CODEMOD_API_KEY }}
+        run: |
+          if [ -z "$CODEMOD_AUTH_TOKEN" ]; then
+            echo "::error::Repository secret CODEMOD_API_KEY is not set. Create one at https://go.codemod.com/api-keys"
+            exit 1
+          fi
+          npx codemod@latest publish .
